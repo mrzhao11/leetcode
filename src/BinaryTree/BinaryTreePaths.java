@@ -70,6 +70,54 @@ public class BinaryTreePaths {
         return res;
     }
 
+    // 路径总和
+    // 给你二叉树的根节点 root 和一个表示目标和的整数 targetSum 。
+    // 判断该树中是否存在 根节点到叶子节点 的路径，这条路径上所有节点值相加等于目标和 targetSum 。
+    // 如果存在，返回 true ；否则，返回 false 。
+    public static boolean hasPathSum(TreeNode root, int targetSum) {
+        if(root == null) return false;
+        targetSum -= root.val;
+        if(root.left == null && root.right == null) {
+            return targetSum == 0;
+        }
+        if(root.left!=null){
+            boolean l = hasPathSum(root.left, targetSum);
+            if(l) return true;
+        }
+        if(root.right!=null){
+            boolean r = hasPathSum(root.right, targetSum);
+            if(r) return true;
+        }
+        return false;
+    }
+
+    // 路径总和||
+    // 给你二叉树的根节点 root 和一个整数目标和 targetSum
+    // 找出所有 从根节点到叶子节点 路径总和等于给定目标和的路径。
+    public static List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        List<Integer> paths = new ArrayList<>();
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) return res;
+        dfs(root, targetSum, paths, res);
+        return res;
+    }
+
+    private static void dfs(TreeNode node, int target, List<Integer> path, List<List<Integer>> res) {
+        path.add(node.val);
+        if (node.left == null && node.right == null) {
+            if(target == node.val)
+                res.add(new ArrayList<>(path));
+        }
+        if (node.left != null) {
+            dfs(node.left, target - node.val, path, res);
+            path.remove(path.size() - 1);
+        }
+        if (node.right != null) {
+            dfs(node.right, target - node.val, path, res);
+            path.remove(path.size() - 1);
+        }
+    }
+
     public static void main(String[] args) {
         // 1. 手动构建一棵树
         //       1
