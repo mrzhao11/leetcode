@@ -66,6 +66,16 @@ public class LowestCommonAncestorBT {
         }
     }
 
+//    // 二叉搜索树的最近公共祖先
+      // 从上到下遍历，第一次遇到节点在pq区间内即是最近最近公共祖先
+//    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+//        if (root.val > p.val && root.val > q.val)
+//            return lowestCommonAncestor(root.left, p, q);
+//        if (root.val < p.val && root.val < q.val)
+//            return lowestCommonAncestor(root.right, p, q);
+//        return root;
+//    }
+
     public static void main(String[] args) {
 
         /**
@@ -112,7 +122,7 @@ public class LowestCommonAncestorBT {
 
         TreeNode lca2 = lowestCommonAncestor(root, p2, q2);
 
-        System.out.println("LCA of " + p2.val + " and " + q2.val + " = " + lca2.val);
+        System.out.println("LCA of " + p2.val + " wwand " + q2.val + " = " + lca2.val);
     }
 
 
