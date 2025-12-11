@@ -1,0 +1,378 @@
+package dp;
+
+import java.util.Arrays;
+
+public class Subsequence {
+    // 最长递增子序列
+    // 输入一个整数数组，返回其中最长严格递增子序列的长度
+    // 子序列可以不连续
+    public static int lengthOfLIS(int[] nums) {
+        int n = nums.length;
+        // dp[i]表示以 nums[i] 结尾的最长递增子序列的长度
+        int[] dp = new int[n];
+        Arrays.fill(dp, 1); // 每个元素自身可以构成长度为1的递增子序列
+
+        for(int i = 1; i < n; i++){
+            for(int j = 0; j < i;j++){
+                // dp[i] 以nums[i]结尾那么前一个元素来自i之前且比nums[i]小的元素
+                if(nums[j] < nums[i]) {
+                    // 位置i的最长升序子序列等于j从0到i-1各个位置的最长升序子序列 + 1 的最大值
+                    dp[i] = Math.max(dp[i],dp[j]+1);
+                }
+            }
+        }
+        int ans = 0;
+        for(int x : dp){
+            ans = Math.max(x,ans);
+        }
+        return ans;
+    }
+
+    // 最长连续递增子序列
+    public static int findLengthOfLCIS(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        Arrays.fill(dp,1);
+
+        for(int i = 1;i<n;i++){
+            if(nums[i-1] < nums[i]){
+                dp[i] = dp[i-1] + 1;
+            }
+        }
+        int ans = 0;
+        for(int x : dp){
+            ans = Math.max(x,ans);
+        }
+        return ans;
+    }
+
+    // 两个数组的最大长度重复子数组
+    // 子数组要求连续
+    public static int findLength(int[] nums1, int[] nums2) {
+        int n1 = nums1.length;
+        int n2 = nums2.length;
+        int res = 0;
+
+        // i-1和j-1是为了方便处理边界情况
+        // dp[i][j]表示以nums1[i-1]和nums2[j-1]结尾的最长「连续」公共子数组长度
+        int[][] dp = new int[n1 + 1][n2 + 1];
+
+        // 遍历时从 1 开始，这样就不需要单独处理边界情况
+        for (int i = 1; i <= n1; i++) {
+            for (int j = 1; j <= n2; j++) {
+                // 只有当nums1[i-1] == nums2[j-1]时，才能构成重复子数组
+                if (nums1[i - 1] == nums2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1; // 继续扩展之前的重复子数组
+                    res = Math.max(res, dp[i][j]); // 更新结果
+                } else {
+                    dp[i][j] = 0;
+                }
+            }
+        }
+        return res;
+    }
+    public static int findLength1d(int[] nums1, int[] nums2) {
+        int n1 = nums1.length;
+        int n2 = nums2.length;
+        int res = 0;
+
+        // 使用一维数组优化空间
+        int[] dp = new int[n2 + 1];
+
+        for (int i = 1; i <= n1; i++) {
+            // 需要从后向前遍历，避免覆盖之前的状态
+            for (int j = n2; j >= 1; j--) {
+                if (nums1[i - 1] == nums2[j - 1]) {
+                    dp[j] = dp[j - 1] + 1;
+                    res = Math.max(res, dp[j]);
+                } else {
+                    dp[j] = 0;
+                }
+            }
+        }
+        return res;
+    }
+
+    // 最长公共子序列
+    // 输入两个字符串，返回它们的最长公共子序列的长度
+    // 子序列不要求连续
+    public static int longestCommonSubsequence(String text1, String text2) {
+        int n1 = text1.length();
+        int n2 = text2.length();
+
+        int[][] dp = new int[n1 + 1][n2 + 1];
+
+        for (int i = 1; i <= n1; i++) {
+            for (int j = 1; j <= n2; j++) {
+                if (text1.charAt(i-1) == text2.charAt(j-1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                }else{
+                    // 此题与最长重复子数组不同之处在于，子序列不要求连续
+                    // 所以当不相等时，取dp[i-1][j]和dp[i][j-1]的最大值
+                    dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
+        return dp[n1][n2];
+    }
+    // 两个数组间的最大连线数
+    // 可以看作是最长公共子序列问题
+    public static int maxUncrossedLines(int[] nums1, int[] nums2) {
+        int n1 = nums1.length;
+        int n2 = nums2.length;
+
+        int[][] dp = new int[n1 + 1][n2 + 1];
+
+        for (int i = 1; i <= n1; i++) {
+            for (int j = 1; j <= n2; j++) {
+                if (nums1[i - 1] == nums2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        return dp[n1][n2];
+    }
+
+    // 最大子数组和
+    // 输入一个整数数组，找到一个具有最大和的连续子数组，返回其和
+    public static int maxSubArray(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        int res = nums[0];
+        dp[0] = nums[0];
+        for(int i = 1;i<n;i++){
+            // 以nums[i]结尾的最大子数组和，要么是包含前面的子数组，要么重新开始
+            dp[i] = Math.max(dp[i-1] + nums[i],nums[i]);
+            res = Math.max(dp[i],res);
+        }
+
+        return res;
+    }
+
+    // 判断子序列
+    // 给定字符串 s 和 t ，判断 s 是否为 t 的子序列
+    public static boolean isSubsequence(String s, String t) {
+        int n1 = s.length();
+        int n2 = t.length();
+        // dp[i][j]表示以i-1和j-1结尾的s和t的最长公共子序列长度
+        int[][] dp = new int[n1+1][n2+1];
+        for(int i = 1;i<=n1;i++){
+            for(int j = 1;j<=n2;j++){
+                // 如果相等，说明可以扩展公共子序列
+                if(s.charAt(i-1)==t.charAt(j-1)){
+                    dp[i][j] = dp[i-1][j-1] + 1;
+                }else{
+                    // 不相等相当于t要删除元素，所以取dp[i][j-1]
+                    dp[i][j] = dp[i][j-1];
+                }
+            }
+        }
+        if(dp[n1][n2] == n1) return true;
+        return false;
+    }
+
+    public static int numDistinct(String s, String t) {
+        int n1 = s.length();
+        int n2 = t.length();
+        if (n1 < n2) return 0;
+        // dp[i][j]表示以i-1为结尾的s子序列中出现以j-1为结尾的t的个数为dp[i][j]
+        int[][] dp = new int[n1 + 1][n2 + 1];
+        // 初始化第一列，t为空字符串时，s的任意子序列都包含空字符串
+        for (int i = 0; i < n1; i++) {
+            dp[i][0] = 1;
+        }
+        // 初始化第一行，s为空字符串时，无法包含非空t，为0，java默认初始化为0，无需显式赋值
+        for (int i = 1; i <= n1; i++) {
+            for (int j = 1; j <= n2; j++) {
+                if (s.charAt(i - 1) == t.charAt(j - 1)) {
+                    // 当s和t的当前字符相等时，可以选择匹配或者不匹配
+                    // 匹配：dp[i-1][j-1]，使用s的当前字符匹配t的当前字符，此时i和j都向前移动一位
+                    // 不匹配：dp[i-1][j]，不使用s的当前字符，继续在s的前i-1个字符中匹配t的前j个字符
+                    dp[i][j] = dp[i - 1][j - 1] + dp[i-1][j];
+                }else{
+                    // 当s和t的当前字符不相等时，s的当前字符无法匹配t的当前字符
+                    // 只能选择不匹配：dp[i-1][j]
+                    dp[i][j] = dp[i-1][j];
+                }
+                // s可以删，t不可以删，因此不能取dp[i][j-1]
+            }
+        }
+        return dp[n1][n2];
+    }
+
+    // 两个字符串的删除操作
+    // 给定两个单词 word1 和 word2，找到使得 word1 和 word2 相同所需的最小步数
+    // 每步可以删除任意一个字符串中的一个字符
+    public static int minDistance(String word1, String word2) {
+        int n1 = word1.length();
+        int n2 = word2.length();
+        // dp[i][j]表示以i-1和j-1结尾的word1和word2的最小删除步数
+        int[][] dp = new int[n1+1][n2+1];
+        for(int i = 0;i<=n1;i++){
+            dp[i][0] = i; // word2为空字符串时，删除word1的所有字符
+        }
+        for(int j = 0;j<=n2;j++){
+            dp[0][j] = j; // word1为空字符串时，删除word2的所有字符
+        }
+        for(int i = 1;i<=n1;i++){
+            for(int j = 1;j<=n2;j++){
+                if(word1.charAt(i-1)==word2.charAt(j-1)){
+                    // 如果相等，则不需要删除，继承之前的状态
+                    dp[i][j] = dp[i-1][j-1];
+                }else{
+                    // 不相等时，删除word1的当前字符或者删除word2的当前字符，取最小值加1
+                    dp[i][j] = Math.min(dp[i-1][j]+1,dp[i][j-1]+1);
+                }
+            }
+        }
+        return dp[n1][n2];
+    }
+    // 同样该题目可以用最长公共子序列来解决，求出最长公共子序列长度lcs，然后用两个字符串长度之和减去2*lcs，即为最小删除步数
+    public static int minDistanceLCS(String word1, String word2) {
+        int n1 = word1.length();
+        int n2 = word2.length();
+
+        int[][] dp = new int[n1 + 1][n2 + 1];
+
+        for (int i = 1; i <= n1; i++) {
+            for (int j = 1; j <= n2; j++) {
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        int lcs = dp[n1][n2];
+        return n1 + n2 - 2 * lcs;
+    }
+
+    // 编辑距离
+    // 给你两个单词 word1 和 word2，请你计算出将 word1 转换成 word2 所使用的最少操作数 。
+    // 你可以对一个单词进行如下三种操作：
+    // 插入一个字符，删除一个字符，替换一个字符
+    public static int EditDistance(String word1, String word2) {
+        int n1 = word1.length();
+        int n2 = word2.length();
+        // dp[i][j]表示以i-1和j-1结尾的word1到word2的最小编辑距离
+        int[][] dp = new int[n1 + 1][n2 + 1];
+        for (int i = 0; i <= n1; i++) {
+            dp[i][0] = i;
+        }
+        for (int j = 0; j <= n2; j++) {
+            dp[0][j] = j;
+        }
+        for (int i = 1; i <= n1; i++) {
+            for (int j = 1; j <= n2; j++) {
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    // 如果相等，则不需要编辑，继承之前的状态
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    // 不相等时，考虑插入、删除、替换三种操作，取最小值加1
+                    // 插入：dp[i][j-1]，在word1中插入word2的当前字符，插入后word2的最后一个字符被匹配，而word1长度不变
+                    // 删除：dp[i-1][j]，删除word1的当前字符，word1长度从i变为i-1
+                    // 替换：dp[i-1][j-1]，将word1的当前字符替换为word2的当前字符，然后两个字符串长度都变为i-1和j-1
+                    dp[i][j] = Math.min(Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1), dp[i - 1][j - 1] + 1);
+                }
+            }
+        }
+        return dp[n1][n2];
+    }
+
+    // 回文子串个数
+    // 给你一个字符串 s ，请你统计并返回这个字符串中 回文子串 的数目。
+    public static int countSubstrings(String s) {
+        int n = s.length();
+        // dp[i][j]表示子串s[i..j]是否为回文子串
+        boolean[][] dp = new boolean[n][n];
+        // dp初始化java默认false，无需显式赋值
+        int res = 0;
+
+        // i 必须从后往前遍历，保证 dp[i+1][j-1] 已经计算好
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = i; j < n; j++) {
+
+                if (s.charAt(i) == s.charAt(j)) {
+                    // 情况 1：单字符
+                    // 情况 2：长度为 2 的子串
+                    if (j - i <= 1) {
+                        dp[i][j] = true;
+                    }
+                    // 情况 3：长度 >= 3，依赖内部区间
+                    else if (dp[i+1][j-1]) {
+                        dp[i][j] = true;
+                    }
+                }
+                // 统计回文子串个数
+                if (dp[i][j]) res++;
+            }
+        }
+        return res;
+    }
+
+    public static int longestPalindromeSubseq(String s) {
+        int n = s.length();
+        // 区间i到j最长的回文子序列长度
+        int[][] dp = new int[n][n];
+        // 初始化单个字符的回文子序列长度为1
+        for (int i = 0; i < n; i++)
+            dp[i][i] = 1;
+
+        // i从后往前遍历，j从i+1往后遍历,j从i+1开始是因为j必须大于i，而j=i时表示单个字符，已经初始化过了
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = i + 1; j < n; j++) {
+                if (s.charAt(i) == s.charAt(j)) {
+                    // 两端字符相等，则回文子序列长度为内部区间加2
+                    dp[i][j] = dp[i + 1][j - 1] + 2;
+                } else {
+                    // 两端字符不等，则取去掉左端或右端字符后的区间的最大值
+                    dp[i][j] = Math.max(dp[i + 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        return dp[0][n - 1];
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {10,9,2,5,3,7,101,18};
+        System.out.println("lengthOfLIS = " + lengthOfLIS(nums)); // 4
+
+        int[] nums2 = {1,3,5,4,7};
+        System.out.println("findLengthOfLCIS = " + findLengthOfLCIS(nums2)); // 4
+
+        int[] nums1 = {1,2,3,2,1};
+        int[] nums3 = {3,2,1,4,7};
+        System.out.println("findLength = " + findLength(nums1, nums3)); // 3
+        System.out.println("findLength1d = " + findLength1d(nums1, nums3)); // 3
+
+        String text1 = "abcde", text2 = "ace";
+        System.out.println("longestCommonSubsequence = " + longestCommonSubsequence(text1, text2)); // 3
+
+        int[] nums4 = {1,4,2}, nums5 = {1,2,4};
+        System.out.println("maxUncrossedLines = " + maxUncrossedLines(nums4, nums5)); // 2
+
+        int[] nums6 = {-2,1,-3,4,-1,2,1,-5,4};
+        System.out.println("maxSubArray = " + maxSubArray(nums6)); // 6
+
+        String s = "abc", t = "ahbgdc";
+        System.out.println("isSubsequence = " + isSubsequence(s, t)); // true
+
+        String s1 = "rabbbit", t1 = "rabbit";
+        System.out.println("numDistinct = " + numDistinct(s1, t1)); // 3
+
+        String word1 = "sea", word2 = "eat";
+        System.out.println("minDistance = " + minDistance(word1, word2)); // 2
+        System.out.println("minDistanceLCS = " + minDistanceLCS(word1, word2)); // 2
+
+        String w1 = "intention", w2 = "execution";
+        System.out.println("EditDistance = " + EditDistance(w1, w2)); // 5
+
+        String str = "aaa";
+        System.out.println("countSubstrings = " + countSubstrings(str)); // 6
+
+        String pstr = "bbabcbcab";
+        System.out.println("longestPalindromeSubseq = " + longestPalindromeSubseq(pstr)); // 7
+    }
+}
