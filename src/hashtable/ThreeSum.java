@@ -1,39 +1,45 @@
 package hashtable;
+
 import java.util.*;
 
 public class ThreeSum {
-    public static List<List<Integer>> threesum(int[] nums){
+
+    // 三数之和
+    // 给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有满足条件且不重复的三元组。
+    // 注意：答案中不可以包含重复的三元组。
+    public static List<List<Integer>> threesum(int[] nums) {
         List<List<Integer>> ans = new ArrayList<>();
         Arrays.sort(nums);
-        for(int i = 0;i<nums.length-2;i++){
+        for (int i = 0; i < nums.length - 2; i++) {
             // 跳过重复的nums[i]
-            if(i>0&&nums[i]==nums[i-1]) continue;
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
             int left = i + 1;
-            int right = nums.length-1;
-            while(left < right){
+            int right = nums.length - 1;
+            while (left < right) {
                 int sum = nums[i] + nums[left] + nums[right];
-                if(sum == 0){
-                    ans.add(Arrays.asList(nums[i],nums[left],nums[right]));
+                if (sum == 0) {
+                    ans.add(Arrays.asList(nums[i], nums[left], nums[right]));
                     // 跳过重复的 left
-                    while(left < right && nums[left] == nums[left + 1]) left++;
+                    while (left < right && nums[left] == nums[left + 1]) left++;
                     // 跳过重复的 right
-                    while(left < right && nums[right] == nums[right - 1]) right--;
+                    while (left < right && nums[right] == nums[right - 1]) right--;
                     right--;
                     left++;
-                }else if(sum > 0){
+                } else if (sum > 0) {
                     right--;
-                }else{
+                } else {
                     left++;
                 }
             }
         }
         return ans;
     }
-    public static void main(String[] args){
+
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
         int[] nums = new int[n];
-        for(int i = 0;i<n;i++){
+        for (int i = 0; i < n; i++) {
             nums[i] = sc.nextInt();
         }
         List<List<Integer>> res = threesum(nums);
