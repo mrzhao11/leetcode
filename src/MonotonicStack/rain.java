@@ -7,52 +7,83 @@ public class rain {
     // 接雨水
     // 给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
     // 暴力解法
-    public static int trap(int[] height){
+    public static int trap(int[] height) {
         int sum = 0;
-        for(int i = 0;i< height.length;i++){
+        for (int i = 0; i < height.length; i++) {
             // 边界不存水
-            if(i == 0 || i == height.length - 1) continue;
+            if (i == 0 || i == height.length - 1) continue;
 
             int rHeight = height[i]; // 右侧最高
             int lHeight = height[i]; // 左侧最高
-            for(int r = i+1;r< height.length;r++){
-                rHeight = Math.max(rHeight,height[r]);
+            for (int r = i + 1; r < height.length; r++) {
+                rHeight = Math.max(rHeight, height[r]);
             }
-            for(int l = i-1;l>=0;l--){
-                lHeight = Math.max(lHeight,height[l]);
+            for (int l = i - 1; l >= 0; l--) {
+                lHeight = Math.max(lHeight, height[l]);
             }
             // 当前位置能存水的高度等于左右两侧最高的较小值减去当前位置高度
-            int h = Math.min(lHeight,rHeight) - height[i];
-            if(h > 0){
+            int h = Math.min(lHeight, rHeight) - height[i];
+            if (h > 0) {
                 sum += h;
             }
         }
         return sum;
     }
 
-    // 双指针优化
-    public static int trap2(int[] height){
-        if(height.length <= 2) return 0;
+    // dp优化
+    public static int trap2(int[] height) {
+        if (height.length <= 2) return 0;
         int[] maxLeft = new int[height.length]; // 记录每个位置左侧最高
         int[] maxRight = new int[height.length]; // 记录每个位置右侧最高
 
         maxLeft[0] = height[0]; // 初始化左侧最高
-        for(int i = 1;i< height.length;i++){
-            maxLeft[i] = Math.max(maxLeft[i-1],height[i]); // 当前位置左侧最高等于前一个位置左侧最高和当前位置高度的较大值
+        for (int i = 1; i < height.length; i++) {
+            maxLeft[i] = Math.max(maxLeft[i - 1], height[i]); // 当前位置左侧最高等于前一个位置左侧最高和当前位置高度的较大值
         }
         maxRight[height.length - 1] = height[height.length - 1];// 初始化右侧最高
-        for(int i = height.length - 2;i>=0;i--){
-            maxRight[i] = Math.max(maxRight[i+1],height[i]); // 当前位置右侧最高等于后一个位置右侧最高和当前位置高度的较大值
+        for (int i = height.length - 2; i >= 0; i--) {
+            maxRight[i] = Math.max(maxRight[i + 1], height[i]); // 当前位置右侧最高等于后一个位置右侧最高和当前位置高度的较大值
         }
         int sum = 0;
-        for(int i = 0;i< height.length;i++){
-            int h = Math.min(maxLeft[i],maxRight[i]) - height[i];
-            if(h > 0){
+        for (int i = 0; i < height.length; i++) {
+            int h = Math.min(maxLeft[i], maxRight[i]) - height[i];
+            if (h > 0) {
                 sum += h;
             }
         }
         return sum;
     }
+
+    // 双指针解法
+    public static int trapTwoPointers(int[] height) {
+        if (height == null || height.length <= 2) return 0;
+
+        int l = 0, r = height.length - 1;
+        int leftMax = 0, rightMax = 0; // 左指针及其左侧最高，右指针及其右侧最高
+        // leftMax 和 rightMax 不是全局的，而是“指针扫过区域内”的最高值
+        int sum = 0;
+
+        // 进入任意一次循环时，都有以下成立：
+        // 不变式 I：区间 [0, l-1] 的水量已经被正确、最终地计算完成
+        // 不变式 II：区间 [r+1, n-1] 的水量已经被正确、最终地计算完成
+        // 不变式 III：区间 [l, r] 的水量尚未确定，需要依赖未来信息
+        while (l < r) {
+            if (height[l] < height[r]) {
+                // 左边更矮，右边一定更高，因此不需要知道右侧最高值，根据左边即可计算
+                leftMax = Math.max(leftMax, height[l]); // 更新左侧最高
+                sum += leftMax - height[l]; // 当前位置能存水的高度等于左侧最高减去当前位置高度
+                l++;
+            } else {
+                // 右边更矮，右边的水量可以确定
+                rightMax = Math.max(rightMax, height[r]);
+                sum += rightMax - height[r];
+                r--;
+            }
+        }
+
+        return sum;
+    }
+
 
     // 单调栈解法
     public static int trap3(int[] height) {
@@ -64,7 +95,7 @@ public class rain {
         st.push(0); // 第一个柱子（下标）入栈
         for (int i = 1; i < height.length; i++) {
 
-            if(height[i] < height[st.peek()]) {
+            if (height[i] < height[st.peek()]) {
                 // 当前柱子比栈顶低，入栈
                 st.push(i);
             } else if (height[i] == height[st.peek()]) {
@@ -140,12 +171,13 @@ public class rain {
     }
 
     public static void main(String[] args) {
-        int[] height = {0,1,0,2,1,0,1,3,2,1,2,1};
+        int[] height = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
         System.out.println(trap(height)); // 输出 6
         System.out.println(trap2(height)); // 输出 6
         System.out.println(trap3(height)); // 输出 6
+        System.out.println(trapTwoPointers(height));
 
-        int[] heights = {2,1,5,6,2,3};
+        int[] heights = {2, 1, 5, 6, 2, 3};
         System.out.println(largestRectangleArea(heights)); // 输出 10
     }
 }
