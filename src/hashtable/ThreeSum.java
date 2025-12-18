@@ -23,6 +23,7 @@ public class ThreeSum {
                     while (left < right && nums[left] == nums[left + 1]) left++;
                     // 跳过重复的 right
                     while (left < right && nums[right] == nums[right - 1]) right--;
+                    // 同时移动 left 和 right，继续寻找下一组
                     right--;
                     left++;
                 } else if (sum > 0) {
