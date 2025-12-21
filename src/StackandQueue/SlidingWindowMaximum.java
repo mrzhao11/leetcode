@@ -8,7 +8,7 @@ import java.util.ArrayDeque;
 
 public class SlidingWindowMaximum {
     public static int[] maxSlidingWindow(int[] nums, int k){
-        Deque<Integer> dq = new ArrayDeque<>(); // 存索引
+        Deque<Integer> dq = new ArrayDeque<>(); // dq存放的是下标，根据数组元素值大小来维护单调递减栈，从队首到队尾递减
         int n = nums.length;
         int[] ans = new int[n - k + 1];
         int idx = 0;
