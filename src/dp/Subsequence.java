@@ -150,6 +150,36 @@ public class Subsequence {
 
         return res;
     }
+    // 改进，如果本体要求返回最大子数组
+    public static int[] maxSubArrayUpdate(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        int res = nums[0];
+        dp[0] = nums[0];
+
+        int curStart = 0;     // 当前子数组起点
+        int bestStart = 0;   // 最优子数组起点
+        int bestEnd = 0;     // 最优子数组终点
+
+        for(int i = 1;i<n;i++){
+            // 是否重新开始
+            if (dp[i - 1] + nums[i] >= nums[i]) {
+                dp[i] = dp[i - 1] + nums[i];
+            } else {
+                dp[i] = nums[i];
+                curStart = i;   //  从 i 重新开始
+            }
+
+            // 更新全局最优
+            if (dp[i] > res) {
+                res = dp[i];
+                bestStart = curStart;
+                bestEnd = i;
+            }
+        }
+
+        return Arrays.copyOfRange(nums, bestStart, bestEnd + 1);
+    }
 
     // 判断子序列
     // 给定字符串 s 和 t ，判断 s 是否为 t 的子序列
@@ -355,6 +385,8 @@ public class Subsequence {
 
         int[] nums6 = {-2,1,-3,4,-1,2,1,-5,4};
         System.out.println("maxSubArray = " + maxSubArray(nums6)); // 6
+        int[] maxSubArray = maxSubArrayUpdate(nums6);
+        System.out.println("maxSubArrayUpdate = " + Arrays.toString(maxSubArray));
 
         String s = "abc", t = "ahbgdc";
         System.out.println("isSubsequence = " + isSubsequence(s, t)); // true
