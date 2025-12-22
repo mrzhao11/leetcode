@@ -43,20 +43,32 @@ public class Interval {
     // 以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] = [starti, endi] 。
     // 请你合并所有重叠的区间，并返回一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间。
     public static int[][] merge(int[][] intervals) {
-        Arrays.sort(intervals, (a,b) -> Integer.compare(a[0], b[0])); // 按区间起点排序
+        // List<int[]> 用于存储合并后的区间
         List<int[]> res = new ArrayList<>();
-        int start = intervals[0][0]; // 记录当前合并区间的起点
-        int rightmostRightBound = intervals[0][1]; // 记录当前合并区间的右边界
+        if (intervals.length == 1) return intervals;
+        // 按区间起点排序
+        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+        int curLeft = intervals[0][0]; // 记录当前合并区间的左边界
+        int curRight = intervals[0][1]; // 记录当前合并区间的右边界
+
         for (int i = 1; i < intervals.length; i++) {
-            if (intervals[i][0] > rightmostRightBound) { // 当前区间与合并区间不重叠
-                res.add(new int[]{start, rightmostRightBound}); // 将合并区间加入结果列表
-                start = intervals[i][0];
-                rightmostRightBound = intervals[i][1];
-            } else { // 当前区间与合并区间重叠
-                rightmostRightBound = Math.max(rightmostRightBound, intervals[i][1]);
+            int left = intervals[i][0];
+            int right = intervals[i][1];
+
+            if (left <= curRight) {
+                // 有重叠，右边界取最大值
+                curRight = Math.max(curRight, right);
+            } else {
+                // 无重叠，将当前区间加入结果，并更新当前合并区间的边界
+                res.add(new int[]{curLeft, curRight});
+                curLeft = left;
+                curRight = right;
             }
         }
-        res.add(new int[]{start, rightmostRightBound}); // 加入最后一个合并区间
+
+        // 由于最后一个区间可能没有被添加到结果中，因此需要在循环结束后再添加一次
+        res.add(new int[]{curLeft, curRight});
+
         return res.toArray(new int[res.size()][]);
     }
 
@@ -81,13 +93,13 @@ public class Interval {
     }
 
     public static void main(String[] args) {
-        int[][] points = {{10,16},{2,8},{1,6},{7,12}};
+        int[][] points = {{10, 16}, {2, 8}, {1, 6}, {7, 12}};
         System.out.println(findMinArrowShots(points)); // 输出 2
 
-        int[][] intervals = {{1,2},{2,3},{3,4},{1,3}};
+        int[][] intervals = {{1, 2}, {2, 3}, {3, 4}, {1, 3}};
         System.out.println(earseOverlapIntervals(intervals)); // 输出 1
 
-        int[][] mergeIntervals = {{1,3},{2,6},{8,10},{15,18}};
+        int[][] mergeIntervals = {{1, 3}, {2, 6}, {8, 10}, {15, 18}};
         int[][] merged = merge(mergeIntervals);
         for (int[] interval : merged) {
             System.out.println(Arrays.toString(interval)); // 输出 [1,6], [8,10], [15,18]
