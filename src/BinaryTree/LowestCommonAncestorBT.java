@@ -15,6 +15,8 @@ public class LowestCommonAncestorBT {
      * 这个函数的返回值始终都是“当前子树中，与 (p, q) 相关的最有价值的信息”。
      * 最顶层最终返回的才是整棵树的 LCA。
      */
+
+    // 函数作用：在以 root 为根的子树中，寻找 p 和 q 的最近公共祖先
     public static TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 
         // 第2步：基本情况 Base Case
@@ -67,7 +69,7 @@ public class LowestCommonAncestorBT {
     }
 
 //    // 二叉搜索树的最近公共祖先
-      // 从上到下遍历，第一次遇到节点在pq区间内即是最近最近公共祖先
+      // 从上到下遍历，第一次遇到节点在pq区间内即是最近公共祖先
 //    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 //        if (root.val > p.val && root.val > q.val)
 //            return lowestCommonAncestor(root.left, p, q);

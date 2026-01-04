@@ -60,6 +60,8 @@ public class Traversal {
         List<Integer> result = new ArrayList<>();
         Deque<TreeNode> st = new ArrayDeque<>();
         TreeNode cur = root;
+        // 如果栈非空或当前节点不为空，则继续
+        // 当前节点非空代表还没到最左叶子节点，栈非空代表还有节点没访问
         while (cur != null || !st.isEmpty()){
             while (cur != null) {        // 一路向左压栈
                 st.push(cur);
@@ -67,7 +69,7 @@ public class Traversal {
             }
             cur = st.pop();              // 到最左，开始访问
             result.add(cur.val);
-            cur = cur.right;             // 转向右子树
+            cur = cur.right;             // 转向右子树，继续上述过程
         }
         print(result);
         return result;
@@ -115,6 +117,7 @@ public class Traversal {
         return levels;
     }
 
+    // 函数作用，将当前节点 node 放入结果集res中第 depth 层对应的列表中
     private static void levelDfs(TreeNode node, int depth, List<List<Integer>> levels){
         if (node == null) return;
         if (levels.size() == depth) levels.add(new ArrayList<>()); // 首次到该层，新建桶

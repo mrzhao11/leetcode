@@ -55,6 +55,8 @@ public class BuildTreeInorderPostorder {
     }
 
     // 加了索引区间参数
+    // inL, inR : 当前子树在 inorder 中的区间
+    // postL, postR : 当前子树在 postorder 中的区间
     private static TreeNode traversal(int[] inorder, int inL, int inR,
                                int[] postorder, int postL, int postR) {
         if (postL > postR || inL > inR) return null;

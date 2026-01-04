@@ -224,4 +224,19 @@ public class BST {
         return root;
     }
 
+    // ==================== 6. 验证 BST isValidBST ====================
+
+    public boolean isValidBST(TreeNode root) {
+        // 初始化范围为 (−∞, +∞)
+        return dfs(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+
+    // 函数 dfs 的契约：以 node 为根的子树，所有节点值必须在 (min, max) 范围内
+    private boolean dfs(TreeNode node, long min, long max) {
+        if (node == null) return true;
+        if (node.val <= min || node.val >= max) return false;
+        return dfs(node.left, min, node.val)
+                && dfs(node.right, node.val, max);
+    }
+
 }
