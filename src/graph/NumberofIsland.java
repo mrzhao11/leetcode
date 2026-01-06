@@ -32,6 +32,7 @@ public class NumberofIsland {
         }
         return count;
     }
+    // 函数作用：淹没以 (x, y) 为起点的岛屿
     private static void dfs(char[][] grid, int x, int y){
         // 终止条件，越界或遇到水则返回
         if(x<0 || x>=m || y<0 || y>=n || grid[x][y]=='0'){
@@ -54,33 +55,34 @@ public class NumberofIsland {
     public static int numIslandbfs(char[][] grid) {
         m = grid.length;
         n = grid[0].length;
-        int count = 0; // 岛屿数量
-        Queue<int[]> queue = new ArrayDeque<>(); // BFS队列
-
+        int count = 0;
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
                 if (grid[i][j] == '1') {
+                    bfs(grid, i, j);
                     count++;
-                    grid[i][j] = '0'; // 标记为已访问
-                    queue.offer(new int[]{i, j}); // 入队
-
-                    while (!queue.isEmpty()) {
-                        int[] cur = queue.poll(); // 出队
-                        // 向四个方向扩展
-                        for (int[] d : dirs) {
-                            int nx = cur[0] + d[0];
-                            int ny = cur[1] + d[1];
-                            // 判断新坐标是否合法且为陆地
-                            if (nx >= 0 && nx < m && ny >= 0 && ny < n && grid[nx][ny] == '1') {
-                                grid[nx][ny] = '0';
-                                queue.offer(new int[]{nx, ny});
-                            }
-                        }
-                    }
                 }
             }
         }
         return count;
+    }
+
+    public static void bfs(char[][] grid, int x, int y) {
+        // 队列储存待访问的节点
+        Queue<int[]> q = new ArrayDeque<>();
+        q.offer(new int[] { x, y });
+        grid[x][y] = '0';
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            for (int[] d : dirs) {
+                int nx = cur[0] + d[0];
+                int ny = cur[1] + d[1];
+                if (nx >= 0 && nx < m && ny >= 0 && ny < n && grid[nx][ny] == '1') {
+                    grid[nx][ny] = '0';
+                    q.offer(new int[] { nx, ny });
+                }
+            }
+        }
     }
     // BFS和DFS区别只是在于遍历方式不同，BFS使用队列，DFS使用递归或栈
 

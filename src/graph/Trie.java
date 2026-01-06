@@ -17,8 +17,10 @@ public class Trie {
     // 每个节点是一个字典，存储字符到TrieNode的映射
     private class TrieNode {
         Map<Character, TrieNode> children; // 使用Map来表示当前节点的子节点，键是字符，值是对应的子节点
+        // 例如：children.get('a') 返回表示字符 'a' 的子节点
         boolean isEnd; // 标记是否为单词的结尾
 
+        // 构造方法
         public TrieNode() {
             children = new HashMap<>();
             isEnd = false;

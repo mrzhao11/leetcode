@@ -29,7 +29,8 @@ public class CourseSchedule {
         for (int[] prereq : prerequisites) {
             graph.get(prereq[1]).add(prereq[0]); // 找到索引为 prereq[1] 的课程（先修课程），添加索引为 prereq[0] 的课程（后续课程）
         }
-        // 例：graph = [[], [0], [0,1]] 表示课程 0 没有先修课程，课程 1 需要先修课程 0，课程 2 需要先修课程 0 和 1
+        // b->a 表示要想学 a 课程，必须先学 b 课程，即 b 指向 a
+        // 例：graph[1] = [0] 表示要想学 0 课程，必须先学 1 课程
 
         // 用一个数组来标记课程的状态：0 -> 未访问，1 -> 访问中，2 -> 已访问
         int[] visited = new int[numCourses];
@@ -89,6 +90,8 @@ public class CourseSchedule {
             graph.get(prereq[1]).add(prereq[0]); // 课程后面的课程依赖关系
             indegree[prereq[0]]++; // 课程的入度增加
         }
+        // graph[1] = [0] 表示要想学 0 课程，必须先学 1 课程，graph下标表示先修课程，值表示后续课程
+        // indegree[0] = 1 表示课程 0 有 1 门先修课程，indegree 下标表示课程，值表示入度
 
         Queue<Integer> queue = new ArrayDeque<>();
         int count = 0;
@@ -104,6 +107,7 @@ public class CourseSchedule {
         while (!queue.isEmpty()) {
             int course = queue.poll();
             count++;
+            // 找到当前course的所有后续课程
             for (int nextCourse : graph.get(course)) {
                 indegree[nextCourse]--; // 学完当前课程，后续课程的入度减 1
                 if (indegree[nextCourse] == 0) {
