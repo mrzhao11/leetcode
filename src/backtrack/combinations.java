@@ -70,6 +70,7 @@ public class combinations {
 
     static StringBuilder temp = new StringBuilder();
 
+    // num代表当前处理的是第几个数字
     public static void backTracking(String digits, String[] numString, int num) {
         if (num == digits.length()) {
             res1.add(temp.toString());
@@ -77,10 +78,46 @@ public class combinations {
         }
         // 获取当前数字对应的字符串,digits.charAt(num) - '0'是将字符转换为对应的整数，如'2'转换为2
         String str = numString[digits.charAt(num) - '0'];
+        // for循环枚举当前数字对应的字符串中的每个字符
         for (int i = 0; i < str.length(); i++) {
             temp.append(str.charAt(i));
             backTracking(digits, numString, num + 1);
             temp.deleteCharAt(temp.length() - 1);
+        }
+    }
+
+
+    // 给定 n 对括号，编写一个函数来生成所有可能的并且 有效的 括号组合。
+    // 1. 左括号数量小于 n 时，可以放置左括号
+    // 2. 右括号数量小于左括号数量时，可以放置右括号
+    // 终止条件：当左右括号数量均为 n 时，得到一个合法的括号组合
+    List<String> res3 = new ArrayList<>();
+    public List<String> generateParenthesis(int n) {
+        backtracking(n, 0, 0, new StringBuilder());
+        return res3;
+    }
+
+
+    // left 表示已经放置的左括号数量，right 表示已经放置的右括号数量
+    private void backtracking(int n, int left, int right, StringBuilder path3) {
+        // 终止条件：长度达到 2 * n
+        if (path3.length() == 2 * n) {
+            res3.add(path3.toString());
+            return;
+        }
+
+        // 选择左括号：只要还没用完
+        if (left < n) {
+            path3.append('(');
+            backtracking(n, left + 1, right, path3);
+            path3.deleteCharAt(path3.length() - 1); // 回溯
+        }
+
+        // 选择右括号：右括号数量不能超过左括号
+        if (right < left) {
+            path3.append(')');
+            backtracking(n, left, right + 1, path3);
+            path3.deleteCharAt(path3.length() - 1); // 回溯
         }
     }
 

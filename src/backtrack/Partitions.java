@@ -12,6 +12,7 @@ public class Partitions {
         return res;
     }
 
+    // startindex表示本次搜索的起始位置，当前这一刀切从startindex开始
     public static void backtracking(String s, int startindex) {
         if (startindex == s.length()) {
             res.add(new ArrayList<>(path));
@@ -19,6 +20,7 @@ public class Partitions {
         }
 
         for (int i = startindex; i < s.length(); i++) {
+            // 截取子串,从startindex到i+1
             String sub = s.substring(startindex, i + 1);
             if (!isPalindrome(sub)) {
                 continue;

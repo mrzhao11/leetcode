@@ -14,6 +14,7 @@ public class Nqueen {
         return res;
     }
 
+    // row表示当前正在处理第几行
     public static void backtracking(char[][] chessboard, int n, int row) {
         if (row == n) {
             // 每轮需要新建一个list存放当前解
