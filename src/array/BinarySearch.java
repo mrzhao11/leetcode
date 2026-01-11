@@ -1,6 +1,7 @@
 package array;
 
 // 二分法
+
 import java.util.*;
 
 public class BinarySearch {
@@ -21,7 +22,7 @@ public class BinarySearch {
         System.out.println(result);
     }
 
-//    // 二分查找方法 闭区间[left, right] target一定在区间内包含两端
+    //    // 二分查找方法 闭区间[left, right] target一定在区间内包含两端
 //    public static int search(int[] nums, int target) {
 //        int left = 0;
 //        int right = nums.length - 1;
@@ -38,21 +39,21 @@ public class BinarySearch {
 //        return -1;
 //    }
 // 二分查找方法 闭区间[left, right） target一定在区间内不包含右端
-public static int search(int[] nums, int target) {
-    int left = 0;
-    int right = nums.length;   //左闭右开
-    while (left < right) {
-        int middle = left + (right - left) / 2;
-        if (nums[middle] == target) {
-            return middle;
-        }else if(nums[middle] < target) {
-            left = middle + 1;
-        }else {
-            right = middle;
+    public static int search(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length;   //左闭右开
+        while (left < right) {
+            int middle = left + (right - left) / 2;
+            if (nums[middle] == target) {
+                return middle;
+            } else if (nums[middle] < target) {
+                left = middle + 1;
+            } else {
+                right = middle;
+            }
         }
+        return -1;
     }
-    return -1;
-}
 }
 
 // 如果排序数组中存在可重复元素，则分别寻找最左边界和最右边界
@@ -63,18 +64,18 @@ public static int search(int[] nums, int target) {
 //由于返回类型是整数，结果只保留 整数部分 ，小数部分将被 舍去 。  不允许用pow or sqrt
 class Solution {
     public int mySqrt(int x) {
-        if(x==0 || x==1) return x;
-        int min=0;
-        int max=x;
-        while(min<=max){
-            int middle = min+(max-min) / 2;
+        if (x == 0 || x == 1) return x;
+        int min = 0;
+        int max = x;
+        while (min <= max) {
+            int middle = min + (max - min) / 2;
             long sq = (long) middle * middle; // 防止溢出
-            if(sq==x){
+            if (sq == x) {
                 return middle;
-            }else if(sq>x){
-                max = middle -1;
-            }else{
-                min = middle +1;
+            } else if (sq > x) {
+                max = middle - 1;
+            } else {
+                min = middle + 1;
             }
         }
         return max;
