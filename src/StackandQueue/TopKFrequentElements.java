@@ -9,22 +9,22 @@ public class TopKFrequentElements {
         for (int i = 0; i < nums.length; i++) {
             mp.put(nums[i], mp.getOrDefault(nums[i], 0) + 1);
         }
-        int[] ans = new int[k];
-        // 自定义小根堆排序规则
+        // 大顶堆，按频率排序,频率高的在前面
         PriorityQueue<Integer> pq = new PriorityQueue<>(
-                (x,y) -> Integer.compare(mp.get(x),mp.get(y))
-        );
+                (a, b) -> Integer.compare(mp.get(b), mp.get(a)));
+        int[] res = new int[k];
+        // 将所有元素加入堆中
         for (int num : mp.keySet()) {
             pq.offer(num);
-            if (pq.size() > k){
-                pq.poll();
-            }
         }
+
+        // 取出前k个高频元素
         int idx = 0;
-        while(!pq.isEmpty()){
-            ans[idx++] = pq.poll();
+        while(!pq.isEmpty() && k!=0){
+            res[idx++] = pq.poll();
+            k--;
         }
-        return ans;
+        return res;
     }
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);

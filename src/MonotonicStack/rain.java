@@ -133,7 +133,7 @@ public class rain {
     // 本题求能勾勒出的矩形的最大面积，那么高度一定是它覆盖所有柱子中的最低高度，宽度则是它覆盖的柱子数量
     // 当确定某根柱子 i 是最矮的柱子时，，此时高度固定，向左延伸和向右延伸，直到遇到比它更矮的柱子为止，这就是最大宽度
     public static int largestRectangleArea(int[] heights) {
-        // 单调栈，存储下标，栈内元素对应的高度单调递增
+        // 单调栈，存储下标，栈内元素对应的高度单调递增，即栈顶是最高的柱子
         Deque<Integer> st = new ArrayDeque<>();
         // 在 heights 数组的两端各添加一个高度为 0 的柱子，方便处理边界情况
         // 假如一个数组是单调递增的，那么栈里会一直有元素，最后一个元素出栈时，左边没有更小的元素了，因此需要在左边添加一个哨兵
@@ -160,6 +160,9 @@ public class rain {
                     if (st.isEmpty()) break;
                     int left = st.peek(); // 左侧第一个比它矮的柱子下标
                     int h = heights[mid]; // 矩形高度等于最矮柱子高度
+                    // 为什么右侧第一个比它矮的柱子下标就是 i 呢？
+                    // 因为当前柱子 heights[i] 比 heights[mid] 矮，而 heights[mid] 是栈顶弹出时的最高柱子
+                    // 因此 heights[i] 一定是右侧第一个比 heights[mid] 矮的柱子
                     int w = i - left - 1; // 矩形宽度等于右侧第一个比它矮的柱子下标减去左侧第一个比它矮的柱子下标再减一
 
                     square = Math.max(square, h * w);
