@@ -2,6 +2,7 @@ package dp;
 
 public class BuyandSellStock {
 
+    // 121. 买卖股票的最佳时机
     // 给你一个整数数组 prices ，其中 prices[i] 表示某支股票第 i 天的价格。
     // 你只能选择 某一天 买入这只股票，并选择在 未来的某一个不同的日子 卖出该股票。
     // 返回 你可以获得的 最大利润 。 如果你无法获得任何利润，返回 0 。
@@ -29,6 +30,7 @@ public class BuyandSellStock {
         return dp[n-1][1];
     }
 
+    // 122. 买卖股票的最佳时机 II
     // 允许多次买卖股票
     public static int maxProfit2(int[] prices) {
         int n = prices.length;
@@ -54,6 +56,7 @@ public class BuyandSellStock {
         return dp[n-1][1];
     }
 
+    // 123. 买卖股票的最佳时机 III
     // 允许最多两次买卖股票
     public static int maxProfit3(int[] prices) {
         int n = prices.length;
@@ -80,6 +83,7 @@ public class BuyandSellStock {
         return dp[n-1][4];
     }
 
+    // 188. 买卖股票的最佳时机 IV
     // 允许最多k次买卖股票
     public static int maxProfit4(int k, int[] prices) {
         int n = prices.length;
@@ -105,6 +109,7 @@ public class BuyandSellStock {
         return dp[n - 1][2 * k];
     }
 
+    // 309. 买卖股票的最佳时机含冷冻期
     // 交易后有冷冻期（即卖出股票后，下一天不能买入股票）,允许多次买卖股票
     public static int maxProfitFrozen(int[] prices) {
         int n = prices.length;
@@ -127,6 +132,7 @@ public class BuyandSellStock {
         return Math.max(dp[n - 1][3], Math.max(dp[n - 1][1], dp[n - 1][2]));
     }
 
+    // 714. 买卖股票的最佳时机含手续费
     // 每次交易需要支付手续费fee，允许多次买卖股票
     public static int maxProfitFee(int[] prices, int fee) {
         int n = prices.length;

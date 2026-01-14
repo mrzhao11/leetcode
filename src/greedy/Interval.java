@@ -79,6 +79,7 @@ public class Interval {
         List<Integer> res = new ArrayList<>();
         int[] end = new int[26];
         for (int i = 0; i < s.length(); i++) {
+            // a - 'a' = 0, b - 'a' = 1, ...
             end[s.charAt(i) - 'a'] = i; // 记录每个字母最后出现的位置
         }
         int left = 0, right = 0; // 记录当前片段的左右边界
