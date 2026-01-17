@@ -17,14 +17,16 @@ public class ClimbStair {
 
     // 使用最小花费爬楼梯
     // cost[i]表示爬到第i层楼梯的花费，可以选择从第i-1层或第i-2层爬上去
-    // 返回爬到楼梯顶部的最小花费，可以从第0层或第1层开始
+    // 返回爬到楼梯顶部的最小花费，可以从第0层或第1层开始   从第0层或第1层开始是不需要花费的
     public static int minCostClimbingStairs(int[] cost) {
         int n = cost.length;
+        // dp[i]表示爬到第i层楼梯的最小花费
         int[] dp = new int[n + 1];
 
         dp[0] = 0; // 从第0层开始花费为0
         dp[1] = 0; // 从第1层开始花费为0
         for (int i = 2; i <= n; i++) {
+            // 选择从第i-1层或第i-2层爬上去，取最小花费
             dp[i] = Math.min(dp[i-1]+cost[i-1],dp[i-2]+cost[i-2]); // 爬到第i层的最小花费
         }
         return dp[n];

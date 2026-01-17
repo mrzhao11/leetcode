@@ -26,19 +26,21 @@ public class HouseRobber {
     }// 如果房屋数组首尾相邻，可以考虑计算从0到n-2和从1到n-1然后比较最大值
 
     // 打家劫舍 + 树形dp
+    // 二叉树的每个节点表示一个房屋，不能同时偷父子节点
+    // 求能够偷到的最大金额
     public static int robT(TreeNode root) {
         int[] res = robTree(root);
         return Math.max(res[0], res[1]);
     }
 
-    // 返回长度为2的数组：res[0] 不偷，res[1] 偷
+    // 返回长度为2的数组：res[0] 不偷当前节点的最大收益，res[1] 偷当前节点的最大收益
     private static int[] robTree(TreeNode root) {
         // 递归终止条件
         if (root == null) return new int[2];
 
         // 后序遍历
-        int[] left = robTree(root.left);
-        int[] right = robTree(root.right);
+        int[] left = robTree(root.left); // 左子树返回的结果，是一个长度为2的数组
+        int[] right = robTree(root.right); // 右子树返回的结果，是一个长度为2的数组
 
         int[] dp = new int[2];
 

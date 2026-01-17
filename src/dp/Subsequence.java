@@ -28,6 +28,36 @@ public class Subsequence {
         return ans;
     }
 
+    // 最长递增子序列可使用贪心+二分法优化至O(nlogn)
+    // 贪心思想：尽可能让每个长度的递增子序列的末尾元素小一些，这样后续添加新元素时才有更大概率接在后面形成更长的递增子序列
+    // 维护一个tails数组，tails[i]表示长度为i+1的递增子序列，其末尾元素的最小值
+    // 遍历数组nums，对于每个元素x，使用二分法在tails数组中查找第一个大于等于x的元素位置idx
+    public static int lengthOfLISOptimized(int[] nums) {
+        int n = nums.length;
+        int[] tails = new int[n]; // tails数组初始化
+        // tails[0]表示长度为1的递增子序列的末尾元素最小值，tails[1]表示长度为2的递增子序列的末尾元素最小值，依此类推
+        int size = 0; // 当前LIS的最大长度
+
+        for (int x : nums) {
+            int l = 0, r = size;
+            // 在tails[0..size]中二分查找第一个大于等于x的元素位置
+            // 在已有的递增子序列中寻找合适的位置替换
+            while (l < r) {
+                int mid = (l + r) >>> 1; // 无符号右移，等同于 (l + r) / 2
+                if (tails[mid] < x) {
+                    l = mid + 1;
+                } else {
+                    r = mid;
+                }
+            }
+            // l 是第一个 >= x 的位置
+            tails[l] = x;
+            if (l == size) size++;
+        }
+        // tails不一定是最终的最长递增子序列，但size是其长度，替换只发生在同样长度的子序列中
+        return size;
+    }
+
     // 最长连续递增子序列
     public static int findLengthOfLCIS(int[] nums) {
         int n = nums.length;
@@ -203,6 +233,8 @@ public class Subsequence {
         return false;
     }
 
+    // 不同的子序列
+    // 给定一个字符串 s 和一个字符串 t ，计算在 s 的子序列中 t 出现的个数
     public static int numDistinct(String s, String t) {
         int n1 = s.length();
         int n2 = t.length();
@@ -365,9 +397,12 @@ public class Subsequence {
         return dp[0][n - 1];
     }
 
+
+
     public static void main(String[] args) {
         int[] nums = {10,9,2,5,3,7,101,18};
         System.out.println("lengthOfLIS = " + lengthOfLIS(nums)); // 4
+        System.out.println("lengthOfLISOptimized = " + lengthOfLISOptimized(nums)); // 4
 
         int[] nums2 = {1,3,5,4,7};
         System.out.println("findLengthOfLCIS = " + findLengthOfLCIS(nums2)); // 4

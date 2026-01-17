@@ -89,6 +89,8 @@ public class bag01 {
         int[] dp = new int[target + 1];
         for(int i = 0; i < N; i++) {
             for (int j = target; j >= nums[i]; j--) {
+                // dp[j] 不选当前数字 nums[i]
+                // dp[j - nums[i]] + nums[i] 选当前数字 nums[i]
                 dp[j] = Math.max(dp[j], dp[j - nums[i]] + nums[i]);
             }
         }
