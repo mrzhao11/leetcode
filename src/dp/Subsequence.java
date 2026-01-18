@@ -130,6 +130,7 @@ public class Subsequence {
         int n1 = text1.length();
         int n2 = text2.length();
 
+        // dp[i][j]表示以text1[i-1]和text2[j-1]结尾的最长公共子序列长度
         int[][] dp = new int[n1 + 1][n2 + 1];
 
         for (int i = 1; i <= n1; i++) {
@@ -363,8 +364,9 @@ public class Subsequence {
                         dp[i][j] = true;
                     }
                     // 情况 3：长度 >= 3，依赖内部区间
-                    else if (dp[i+1][j-1]) {
-                        dp[i][j] = true;
+                    else {
+                        // dp[i][j] 取决于 dp[i+1][j-1]
+                        dp[i][j] = dp[i + 1][j - 1];
                     }
                 }
                 // 统计回文子串个数
@@ -374,6 +376,9 @@ public class Subsequence {
         return res;
     }
 
+    // 最长回文子序列
+    // 给你一个字符串 s ，找出其中最长的回文子序列，并返回该序列的长度。
+    // 子序列可以不连续，而子串要求连续
     public static int longestPalindromeSubseq(String s) {
         int n = s.length();
         // 区间i到j最长的回文子序列长度
@@ -397,6 +402,40 @@ public class Subsequence {
         return dp[0][n - 1];
     }
 
+    // 最长回文子串
+    // 给你一个字符串 s，找到 s 中最长的回文子串。
+    public static String longestPalindrome(String s) {
+        int n = s.length();
+        if (n < 2) return s;
+
+        boolean[][] dp = new boolean[n][n];
+
+        int start = 0;     // 最长回文子串的起点
+        int maxLen = 1;    // 最长回文子串的长度（至少是 1）
+
+        // i 从后往前，保证 dp[i+1][j-1] 已经算过
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = i; j < n; j++) {
+
+                if (s.charAt(i) == s.charAt(j)) {
+                    // 长度为 1 或 2，必然是回文
+                    if (j - i <= 1) {
+                        dp[i][j] = true;
+                    } else {
+                        dp[i][j] = dp[i + 1][j - 1];
+                    }
+                }
+
+                // 如果是回文，并且更长，更新答案
+                if (dp[i][j] && j - i + 1 > maxLen) {
+                    maxLen = j - i + 1;
+                    start = i;
+                }
+            }
+        }
+
+        return s.substring(start, start + maxLen);
+    }
 
 
     public static void main(String[] args) {
@@ -441,5 +480,8 @@ public class Subsequence {
 
         String pstr = "bbabcbcab";
         System.out.println("longestPalindromeSubseq = " + longestPalindromeSubseq(pstr)); // 7
+
+        String pstr2 = "babad";
+        System.out.println("longestPalindrome = " + longestPalindrome(pstr2)); // "bab" or "aba"
     }
 }
