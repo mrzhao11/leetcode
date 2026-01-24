@@ -2,6 +2,7 @@ package string;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class LongestSubstringNoRepeat {
     // 给定一个字符串 s ，请你找出其中不含有重复字符的 最长子串 的长度。
@@ -27,5 +28,12 @@ public class LongestSubstringNoRepeat {
         }
 
         return res;
+    }
+
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        String s = sc.nextLine();
+        int length = lengthOfLongestSubstring(s);
+        System.out.println(length);
     }
 }
