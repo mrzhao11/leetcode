@@ -1,6 +1,7 @@
 package sort;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class quicksort {
     // 首位轴
@@ -76,5 +77,62 @@ public class quicksort {
         }
         swap.swap(arr, l, j - 1); // 主轴元素归位
         return j - 1;
+    }
+}
+
+
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        int n = nums.length;
+        return quickSelect3(nums, 0, n - 1, n - k);
+    }
+
+    // 三路快排思想的快速选择算法
+    private int quickSelect3(int[] arr, int l, int r, int target) {
+        if (l == r) return arr[l]; // 递归终止条件
+
+        // 随机选择一个轴，并交换到最左边
+        int idx = ThreadLocalRandom.current().nextInt(l, r + 1);
+        swap(arr, l, idx);
+        int pivot = arr[l];
+
+        int lt = l; // arr[l+1...lt] < pivot
+        int gt = r; // arr[gt...r] > pivot
+        int i = l + 1; // arr[lt+1...i) == pivot
+        // l l+1...lt  lt+1...i...gt...r
+
+        // 如果当前元素小于轴，则与lt位置交换，lt和i都右移
+        // 如果当前元素大于轴，则与gt位置交换，gt左移，i不变
+        // 如果当前元素等于轴，则i右移
+        while (i <= gt) {
+            if (arr[i] < pivot) {
+                swap(arr, i, lt);
+                lt++;
+                i++;
+            } else if (arr[i] > pivot) {
+                swap(arr, i, gt);
+                gt--;
+            } else {
+                i++;
+            }
+        }
+
+        // 现在：
+        // [l ... lt-1] < pivot
+        // [lt ... gt]  == pivot
+        // [gt+1 ... r] > pivot
+
+        if (target >= lt && target <= gt)
+            return pivot;
+        else if (target < lt)
+            return quickSelect3(arr, l, lt - 1, target);
+        else
+            return quickSelect3(arr, gt + 1, r, target);
+    }
+
+    private void swap(int[] arr, int i, int j) {
+        int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
     }
 }
