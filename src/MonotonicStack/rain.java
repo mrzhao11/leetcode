@@ -38,11 +38,11 @@ public class rain {
 
         maxLeft[0] = height[0]; // 初始化左侧最高
         for (int i = 1; i < height.length; i++) {
-            maxLeft[i] = Math.max(maxLeft[i - 1], height[i]); // 当前位置左侧最高等于前一个位置左侧最高和当前位置高度的较大值
+            maxLeft[i] = Math.max(maxLeft[i - 1], height[i - 1]); // 当前位置左侧最高等于前一个位置左侧最高和前一个位置高度的较大值
         }
         maxRight[height.length - 1] = height[height.length - 1];// 初始化右侧最高
         for (int i = height.length - 2; i >= 0; i--) {
-            maxRight[i] = Math.max(maxRight[i + 1], height[i]); // 当前位置右侧最高等于后一个位置右侧最高和当前位置高度的较大值
+            maxRight[i] = Math.max(maxRight[i + 1], height[i + 1]); // 当前位置右侧最高等于后一个位置右侧最高和后一个位置高度的较大值
         }
         int sum = 0;
         for (int i = 0; i < height.length; i++) {
