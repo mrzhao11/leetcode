@@ -10,14 +10,14 @@ public class FirstMissingPositive {
 
         // 值x放到下标x-1的位置，映射关系
         for (int i = 0; i < nums.length; i++) {
+            // 只去判断正整数1到n的范围内的数，除此之外的数都不处理
             // 如果nums[i]在范围内（非正数和大于n的数直接跳过）且不在正确的位置上，就交换到正确的位置
             while (nums[i] >= 1 && nums[i] <= nums.length
                     && nums[i] != nums[nums[i] - 1]) {
                 // 交换nums[i]和nums[nums[i]-1]
-                int correctIdx = nums[i] - 1;
                 int temp = nums[i];
-                nums[i] = nums[correctIdx];
-                nums[correctIdx] = temp;
+                nums[i] = nums[temp - 1];
+                nums[temp - 1] = temp;
             }
         }
 
