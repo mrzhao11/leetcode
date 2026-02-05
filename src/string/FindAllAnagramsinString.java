@@ -3,6 +3,9 @@ package string;
 import java.util.*;
 
 public class FindAllAnagramsinString {
+    // 找到字符串中所有字母异位词
+    // 给定两个字符串 s 和 p，返回 s 中所有 p 的 异位词 的起始索引。不考虑答案输出的顺序。
+    // 异位词 指由相同字母重排列形成的字符串（包括相同的字符串）。
     public static List<Integer> findAnagrams(String s, String p) {
         List<Integer> res = new ArrayList<>();
         if (s.length() < p.length())

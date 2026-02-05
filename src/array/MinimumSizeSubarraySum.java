@@ -6,12 +6,12 @@ import java.util.*;
 
 
 public class MinimumSizeSubarraySum {
+
     // 209. 长度最小的子数组
     //给定一个含有 n 个正整数的数组和一个正整数 target 。
     //找出该数组中满足其总和大于等于 target 的长度最小的
     // 子数组 [numsl, numsl+1, ..., numsr-1, numsr] ，并返回其长度。
     // 如果不存在符合条件的子数组，返回 0 。
-
     private static int minSubarrayLen(int[] nums, int target) {
         int l = 0;
         int r = 0;
@@ -93,7 +93,9 @@ public class MinimumSizeSubarraySum {
                 map.put(c,map.get(c) - 1);
             }
             r++;// 右移右指针
+
             // 当n为0时，说明当前窗口已经包含t中所有字符，尝试收缩左边界
+            // 因为左边界可能可以一直收缩，所以用while
             while(need == 0){
                 // 更新结果，记录最小长度和子串
                 if(r - l < count){

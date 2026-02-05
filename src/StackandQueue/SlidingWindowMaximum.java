@@ -14,6 +14,7 @@ public class SlidingWindowMaximum {
         int idx = 0;
         for(int i = 0;i < n; i++){
             // 保证dq头一直在窗口内
+            // 如果队首下标小于i - k + 1，说明队首元素已经不在窗口内了，需要弹出
             while(!dq.isEmpty() && dq.peekFirst() < i - k + 1){
                 dq.pollFirst();
             }
