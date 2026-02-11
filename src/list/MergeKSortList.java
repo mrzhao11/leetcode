@@ -13,7 +13,8 @@ public class MergeKSortList {
     public static ListNode mergeKListsPQ(ListNode[] lists) {
         if(lists == null || lists.length == 0) return null;
         // 优先队列（最小值优先），按节点值排序
-        PriorityQueue<ListNode> pq = new PriorityQueue<>((a, b) -> a.val - b.val);
+        PriorityQueue<ListNode> pq =
+                new PriorityQueue<>((a, b) -> Integer.compare(a.val, b.val));
 
         for(ListNode list : lists) {
             if(list != null) {

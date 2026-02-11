@@ -11,10 +11,18 @@ public class LRUCache {
     class Node {
         int key,value; // 结点的键和值
         Node prev,next; // 结点的前驱和后继
+        // 如果需要实现带过期时间的缓存，可以在结点中添加一个 expireTime 字段
+        // long expireTime; // 结点的过期时间（可选）
         Node(int key, int value) {
             this.key = key;
             this.value = value;
         }
+        // 如果需要实现带过期时间的缓存，可以使用下面的构造函数
+//        Node(int key, int value, long ttl) {
+//            this.key = key;
+//            this.value = value;
+//            this.expireTime = System.currentTimeMillis() + ttl;
+//        }
     }
 
     private int capacity; // 缓存的容量
@@ -40,6 +48,13 @@ public class LRUCache {
             return -1; // 如果键不存在，返回 -1
         }
         Node node = map.get(key);
+//        if (isExpired(node)) {
+//            // 如果结点过期，移除结点并返回 -1
+//            remove(node);
+//            map.remove(key);
+//            return -1;
+//        }
+
         remove(node); // 将结点从当前位置移除
         moveToHead(node); // 将结点插入到头部，表示最近使用
         return node.value; // 返回结点的值
@@ -48,9 +63,20 @@ public class LRUCache {
     // 如果关键字key已经存在，则变更其数据值；如果不存在，则插入该组「键-值」。
     // 当缓存容量达到上限时，它应该在写入新数据之前删除最久未使用的数据值，从而为新的数据值留出空间。
     // 注意，每次插入或更新结点后，都要将该结点移动到链表头部，表示最近使用
+    // 如果实现了过期时间功能，可以在构造函数中添加一个 ttl 参数，表示结点的存活时间
     public void put(int key, int value) {
         if (map.containsKey(key)) {
             Node node = map.get(key);
+//            if (isExpired(node)){
+//                remove(node);
+//                map.remove(key);
+//            }else{
+//                node.value = value; // 更新结点的值
+//                node.expireTime = System.currentTimeMillis() + ttl; // 更新结点的过期时间
+//                remove(node); // 将结点从当前位置移除
+//                moveToHead(node); // 将结点插入到头部，表示最近使用
+//                return;
+//            }
             node.value = value; // 更新结点的值
             remove(node); // 将结点从当前位置移除
             moveToHead(node); // 将结点插入到头部，表示最近使用
@@ -81,6 +107,12 @@ public class LRUCache {
         head.next.prev = node;
         head.next = node;
     }
+
+//    // 检查结点是否过期（如果实现了过期时间功能）
+//    private boolean isExpired(Node node) {
+//        return System.currentTimeMillis() > node.expireTime;
+//    }
+
 
     public static void main(String[] args) {
         LRUCache lruCache = new LRUCache(2);

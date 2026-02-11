@@ -49,6 +49,7 @@ public class SortList {
 
         // subLen 表示当前子链表长度：1, 2, 4, 8...
         // subLen <<= 1 相当于 subLen *= 2,即每次翻倍
+        // 也就是每次先两两合并，再四四合并，以此类推，直到子链表长度大于等于链表总长度
         for (int subLen = 1; subLen < length; subLen <<= 1) {
 
             ListNode prev = dummy;
