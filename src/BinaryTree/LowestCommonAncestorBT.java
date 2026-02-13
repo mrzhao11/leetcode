@@ -29,10 +29,6 @@ public class LowestCommonAncestorBT {
 
 
         // 第3步：递归步骤 Recursive Step
-        // --------------------------------------------------
-        // 将“在这棵子树中找 LCA”的任务，拆分为两个更小的问题：
-        //   - 在左子树找 LCA（或部分结果）
-        //   - 在右子树找 LCA（或部分结果）
         // 递归假设：lowestCommonAncestor() 在更小的子树中已经能正确返回契约规定的结果
         TreeNode left = lowestCommonAncestor(root.left, p, q);
         TreeNode right = lowestCommonAncestor(root.right, p, q);
@@ -68,15 +64,16 @@ public class LowestCommonAncestorBT {
         }
     }
 
-//    // 二叉搜索树的最近公共祖先
-      // 从上到下遍历，第一次遇到节点在pq区间内即是最近公共祖先
-//    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-//        if (root.val > p.val && root.val > q.val)
-//            return lowestCommonAncestor(root.left, p, q);
-//        if (root.val < p.val && root.val < q.val)
-//            return lowestCommonAncestor(root.right, p, q);
-//        return root;
-//    }
+    // 二叉搜索树的最近公共祖先
+    // 从上到下遍历，第一次遇到节点在pq区间内即是最近公共祖先
+    // 原理：BST的性质，左子树<根<右子树，所以如果p和q都小于根节点，则LCA在左子树；如果都大于根节点，则LCA在右子树；否则LCA就是当前根节点
+    public TreeNode lowestCommonAncestor1(TreeNode root, TreeNode p, TreeNode q) {
+        if (root.val > p.val && root.val > q.val)
+            return lowestCommonAncestor1(root.left, p, q);
+        if (root.val < p.val && root.val < q.val)
+            return lowestCommonAncestor1(root.right, p, q);
+        return root;
+    }
 
     public static void main(String[] args) {
 
