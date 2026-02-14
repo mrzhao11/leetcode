@@ -64,6 +64,60 @@ public class LowestCommonAncestorBT {
         }
     }
 
+    // 最近公共祖先不使用递归，而是迭代的方式实现
+    // 思路：用栈模拟DFS，记录每个节点的父节点；找到 p 和 q 后，分别记录它们到 root 的路径；最后从 root 方向找最后一个公共节点
+    public TreeNode lowestCommonAncestorIterative(TreeNode root, TreeNode p, TreeNode q) {
+        // 1️⃣ 用栈模拟DFS，记录每个节点的父节点
+        Map<TreeNode, TreeNode> parent = new HashMap<>(); // key: 当前节点，value: 父节点
+        Stack<TreeNode> stack = new Stack<>(); // 用来DFS遍历树
+
+        parent.put(root, null); // 根节点没有父节点
+        stack.push(root); // 从根节点开始DFS
+
+        // 直到同时找到 p 和 q
+        while (!parent.containsKey(p) || !parent.containsKey(q)) {
+            TreeNode node = stack.pop();
+
+            if (node.left != null) {
+                parent.put(node.left, node);
+                stack.push(node.left);
+            }
+
+            if (node.right != null) {
+                parent.put(node.right, node);
+                stack.push(node.right);
+            }
+        }
+
+        // 2️⃣ 记录 p -> root 路径（用数组/列表）
+        List<TreeNode> pathP = new ArrayList<>();
+        while (p != null) {
+            pathP.add(p);
+            p = parent.get(p); // 沿着 parent 指针往上走，直到 root（parent.get(root) = null）
+        }
+
+        // 3️⃣ 记录 q -> root 路径
+        List<TreeNode> pathQ = new ArrayList<>();
+        while (q != null) {
+            pathQ.add(q);
+            q = parent.get(q);
+        }
+
+        // 4️⃣ 从 root 方向找最后一个公共节点
+        int i = pathP.size() - 1;
+        int j = pathQ.size() - 1;
+
+        TreeNode lca = null;
+
+        while (i >= 0 && j >= 0 && pathP.get(i) == pathQ.get(j)) {
+            lca = pathP.get(i);
+            i--;
+            j--;
+        }
+
+        return lca;
+    }
+
     // 二叉搜索树的最近公共祖先
     // 从上到下遍历，第一次遇到节点在pq区间内即是最近公共祖先
     // 原理：BST的性质，左子树<根<右子树，所以如果p和q都小于根节点，则LCA在左子树；如果都大于根节点，则LCA在右子树；否则LCA就是当前根节点
