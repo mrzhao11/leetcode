@@ -22,9 +22,9 @@ public class Subsets {
 
     public static void backtracking(int[] nums,int startindex){
         res.add(new ArrayList<>(path));
-        if (startindex >= nums.length) {
-            return;
-        }
+//        if (startindex >= nums.length) { 多余的剪枝，因为for循环已经控制了边界
+//            return;
+//        }
         for (int i = startindex;i < nums.length;i++){
             // 如果数组里面包含重复元素，需要剪枝
             // if (i > startindex && nums[i] == nums[i-1]) continue;
@@ -77,7 +77,7 @@ public class Subsets {
             res2.add(new ArrayList<>(path2));
             return;
         }
-        // 如果数组中没有重复元素
+        // 如果数组中有重复元素，不能使用used数组去重，因为同一个数在不同位置可能被多次使用（例如 [1,2,1] 中 1 在不同位置），需要使用HashSet去重
         // Set<Integer> set = new HashSet<>();
         for (int i = 0;i < nums.length;i++){
             // 纵向去重：每个元素只能使用一次

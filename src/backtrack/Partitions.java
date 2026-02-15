@@ -20,7 +20,7 @@ public class Partitions {
         }
 
         for (int i = startindex; i < s.length(); i++) {
-            // 截取子串,从startindex到i+1
+            // 截取子串,从startindex到i+1,左闭右开，即[startindex, i]
             String sub = s.substring(startindex, i + 1);
             if (!isPalindrome(sub)) {
                 continue;
