@@ -76,6 +76,52 @@ public class BinarySearch {
         }
         return max;
     }
+
+    // 在排序数组中查找元素的第一个和最后一个位置
+    public int[] searchRange(int[] nums, int target) {
+        int left = leftsearch(nums, target);
+        int right = rightsearch(nums, target);
+        // 情况 1：target 比数组所有元素都小 或 都大
+        if (left == nums.length || right < 0) {
+            return new int[] { -1, -1 };
+        }
+
+        // 情况 2：target 在数组范围内，但不存在
+        if (nums[left] != target || nums[right] != target) {
+            return new int[] { -1, -1 };
+        }
+
+        // 情况 3：target 存在
+        return new int[] { left, right };
+
+    }
+
+    public int leftsearch(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        // 找左边界
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] >= target) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return right + 1;
+    }
+
+    public int rightsearch(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] <= target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return left - 1;
+    }
 }
 
 
