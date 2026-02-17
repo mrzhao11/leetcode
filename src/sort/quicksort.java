@@ -96,10 +96,10 @@ class Solution {
         swap(arr, l, idx);
         int pivot = arr[l];
 
-        int lt = l; // arr[l+1...lt] < pivot
-        int gt = r; // arr[gt...r] > pivot
-        int i = l + 1; // arr[lt+1...i) == pivot
-        // l l+1...lt  lt+1...i...gt...r
+        // 三路划分，lt指向小于轴的区域的右边界，gt指向大于轴的区域的左边界，i用于扫描
+        int lt = l;
+        int gt = r;
+        int i = l + 1;
 
         // 如果当前元素小于轴，则与lt位置交换，lt和i都右移
         // 如果当前元素大于轴，则与gt位置交换，gt左移，i不变
