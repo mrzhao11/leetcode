@@ -37,7 +37,7 @@ public class DecodeString {
                 StringBuilder prev = strStack.pop(); // 取出之前的字符串
 
                 for (int i = 0; i < repeat; i++) {
-                    prev.append(cur);
+                    prev.append(cur); // 将当前字符串重复 append 到之前的字符串上
                 }
                 cur = prev; // 更新当前字符串
             }
