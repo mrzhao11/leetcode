@@ -15,7 +15,7 @@ public class Interval {
         Arrays.sort(points, (a, b) -> Integer.compare(a[0], b[0])); // 按区间起点排序
         int count = 1;
         for (int i = 1; i < points.length; i++) {
-            if (points[i][0] > points[i - 1][1]) {
+            if (points[i][0] > points[i - 1][1]) { // 当前区间与上一个区间不重叠，需要增加箭的数量
                 count++;
             } else {
                 points[i][1] = Math.min(points[i][1], points[i - 1][1]); // 更新重叠区间右边边界的最小值
@@ -24,6 +24,8 @@ public class Interval {
         return count;
     }
 
+    // 435. 无重叠区间
+    // 给定一个区间的集合 intervals ，其中 intervals[i] = [starti, endi] 。返回 需要移除区间的最小数量，使剩余区间互不重叠 。
     public static int earseOverlapIntervals(int[][] intervals) {
         Arrays.sort(intervals, (a, b) -> Integer.compare(a[1], b[1])); // 按区间结束位置排序
         int remove = 0;  // 记录需要移除的区间数量

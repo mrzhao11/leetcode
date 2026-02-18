@@ -7,6 +7,7 @@ public class BuyandSellStock {
     // 你只能选择 某一天 买入这只股票，并选择在 未来的某一个不同的日子 卖出该股票。
     // 返回 你可以获得的 最大利润 。 如果你无法获得任何利润，返回 0 。
     // dp + 状态机
+    // 只能进行一次交易，所以买入股票时，之前没有买入过，所以利润就是 -prices[i]
     public static int maxProfit(int[] prices) {
         int n = prices.length;
         // dp[i][0] 表示第i天持有股票时的最大利润
