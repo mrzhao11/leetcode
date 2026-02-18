@@ -1,6 +1,9 @@
 package dp;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class Subsequence {
     // 最长递增子序列
@@ -11,7 +14,7 @@ public class Subsequence {
         // dp[i]表示以 nums[i] 结尾的最长递增子序列的长度
         int[] dp = new int[n];
         Arrays.fill(dp, 1); // 每个元素自身可以构成长度为1的递增子序列
-
+        int res = 1; // 最小的递增子序列长度为1
         for(int i = 1; i < n; i++){
             for(int j = 0; j < i;j++){
                 // dp[i] 以nums[i]结尾那么前一个元素来自i之前且比nums[i]小的元素
@@ -20,13 +23,50 @@ public class Subsequence {
                     dp[i] = Math.max(dp[i],dp[j]+1);
                 }
             }
+            res = Math.max(res,dp[i]);
         }
-        int ans = 0;
-        for(int x : dp){
-            ans = Math.max(x,ans);
-        }
-        return ans;
+        return res;
     }
+
+    // 如果要求返回最长递增子序列本身，而不仅仅是长度
+    // 可以在dp数组的基础上维护一个prev数组记录前驱下标，最后通过反向构造路径得到最长递增子序列
+    public static List<Integer> lengthOfLISWithPath(int[] nums) {
+        int n = nums.length;
+
+        int[] dp = new int[n];
+        int[] prev = new int[n];  // prev[i]记录以nums[i]结尾的最长递增子序列中，nums[i]的前一个元素的下标
+
+        Arrays.fill(dp, 1);
+        Arrays.fill(prev, -1); // 初始化prev为-1，表示没有前驱
+
+        int maxLen = 1; // 最长递增子序列的长度至少为1
+        int endIndex = 0; // 记录最长递增子序列的最后一个元素的下标
+
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[j] < nums[i] && dp[j] + 1 > dp[i]) {
+                    dp[i] = dp[j] + 1;
+                    prev[i] = j;   // 更新prev[i]为j，表示nums[j]是nums[i]的前一个元素
+                }
+            }
+            // 如果当前的最长递增子序列长度大于全局最大长度
+            if (dp[i] > maxLen) {
+                maxLen = dp[i]; // 更新全局最大长度
+                endIndex = i; // 更新最长递增子序列最后一个元素的下标
+            }
+        }
+
+        // 反向构造 LIS
+        List<Integer> path = new ArrayList<>();
+        while (endIndex != -1) {
+            path.add(nums[endIndex]); // 将当前元素加入路径
+            endIndex = prev[endIndex]; // 更新endIndex为前一个元素的下标，继续向前追溯
+        }
+
+        Collections.reverse(path);
+        return path;
+    }
+
 
     // 最长递增子序列可使用贪心+二分法优化至O(nlogn)
     // 贪心思想：尽可能让每个长度的递增子序列的末尾元素小一些，这样后续添加新元素时才有更大概率接在后面形成更长的递增子序列

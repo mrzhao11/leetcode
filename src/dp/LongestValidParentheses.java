@@ -6,6 +6,7 @@ import java.util.Deque;
 public class LongestValidParentheses {
 
     // 给定一个只包含 '(' 和 ')' 的字符串，找出最长的包含有效括号的子串的长度。
+    // 时间复杂度O(n)，空间复杂度O(n)
     public static int longestValidParenthesesDp(String s) {
         int n = s.length();
         int[] dp = new int[n];// 以i结尾的最长有效括号子串的长度
@@ -17,7 +18,7 @@ public class LongestValidParentheses {
             if (s.charAt(i) == ')') {
                 // 情况1：s.charAt(i-1) == '('，形成"()"
                 if (s.charAt(i - 1) == '(') {
-                    if (i - 2 >= 0) {
+                    if (i - 2 >= 0) { // 如果"()"前面还有有效括号子串，累加上它的长度
                         dp[i] = dp[i - 2] + 2;
                     } else {
                         dp[i] = 2;
@@ -43,6 +44,7 @@ public class LongestValidParentheses {
         return res;
     }
 
+    // 时间复杂度O(n)，空间复杂度O(n)
     public static int longestValidParenthesesStack(String s) {
         // 栈里存的下标，只有两种合法身份：
         // 1️⃣ “还没被匹配的左括号 ( 的下标”
