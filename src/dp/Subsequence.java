@@ -361,6 +361,7 @@ public class Subsequence {
         int n2 = word2.length();
         // dp[i][j]表示以i-1和j-1结尾的word1到word2的最小编辑距离
         int[][] dp = new int[n1 + 1][n2 + 1];
+        // 初始化第一列，word2为空字符串时，删除word1的所有字符
         for (int i = 0; i <= n1; i++) {
             dp[i][0] = i;
         }
@@ -386,6 +387,7 @@ public class Subsequence {
 
     // 回文子串个数
     // 给你一个字符串 s ，请你统计并返回这个字符串中 回文子串 的数目。
+    // 子串要求连续，而子序列可以不连续
     public static int countSubstrings(String s) {
         int n = s.length();
         // dp[i][j]表示子串s[i..j]是否为回文子串
@@ -444,6 +446,7 @@ public class Subsequence {
 
     // 最长回文子串
     // 给你一个字符串 s，找到 s 中最长的回文子串。
+    // 子串要求连续，而子序列可以不连续
     public static String longestPalindrome(String s) {
         int n = s.length();
         if (n < 2) return s;

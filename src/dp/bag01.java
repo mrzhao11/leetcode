@@ -112,6 +112,7 @@ public class bag01 {
         }
         int target = sum / 2;
         int N = stones.length;
+        // dp[j] 表示：容量为 j 的背包，能装入的最大“重量和”（即选到的石头重量和）是多少
         int[] dp = new int[target + 1];
         for(int i = 0; i < N; i++) {
             for (int j = target; j >= stones[i]; j--) {
