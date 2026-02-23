@@ -29,7 +29,7 @@ public class FindtheDuplicateNumber {
 
             // 如果 <= mid 的数多于 mid，说明重复数在左半边
             if (cnt > mid) {
-                ans = mid;
+                ans = mid; // 记录可能的答案
                 right = mid - 1;
             } else {
                 left = mid + 1;

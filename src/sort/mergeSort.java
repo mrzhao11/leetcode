@@ -1,34 +1,53 @@
 package sort;
 
 public class mergeSort {
+
     // 归并排序
-    // 时间复杂度 O(nlogn)，空间复杂度 O(n)，稳定排序
-    // 采用分治思想，将数组不断二分，直到子数组长度为1，然后合并有序子数组
-    public static int[] mergeSort1(int[] arr) {
-        if (arr.length < 2) return arr;
-        int[] tmpArr = new int[arr.length]; // 辅助数组，用于合并时存放有序元素
-        mergeSort(arr, tmpArr, 0, arr.length - 1);
-        return arr;
+    // 归并排序的核心思想是分治法，将数组分成两半，分别对两半进行排序，然后将排序好的两半合并成一个有序的数组。
+    // 时间复杂度：O(n log n)，空间复杂度：O(n)（需要一个辅助数组来合并）
+    public int[] sortArray(int[] nums) {
+        if (nums == null || nums.length <= 1) return nums;
+        int[] temp = new int[nums.length];   // 只申请一次辅助数组，主要用于合并过程
+        mergeSort(nums, 0, nums.length - 1, temp);
+        return nums;
     }
-    // mergeSort 递归方法
-    private static void mergeSort(int[] arr, int[] tmpArr, int l, int r) {
-        if(l < r) {
-            int c = l + (r - l) / 2;
-            mergeSort(arr, tmpArr, l, c); // 排左半部分
-            mergeSort(arr, tmpArr, c + 1, r); // 排右半部分
-            merge(arr, tmpArr, l, c, r); // 合并两个有序部分
-        }
+
+    // nums：待排序数组，left：左边界，right：右边界，temp：辅助数组
+    private void mergeSort(int[] nums, int left, int right, int[] temp) {
+        if (left >= right) return;
+
+        int mid = left + (right - left) / 2; // 防止溢出
+
+        mergeSort(nums, left, mid, temp);
+        mergeSort(nums, mid + 1, right, temp);
+
+        merge(nums, left, mid, right, temp);
     }
-    // 非原地合并方法，假设左半和右半已经有序，此时合并两个有序段
-    private static void merge(int[] arr, int[] tmpArr, int l, int c, int r) {
-        int lh = l, rh = c + 1, h = l; // lh: left head, rh: right head, h: tmpArr head
-        // 比较左右两半的元素，依次放入 tmpArr 中
-        while (lh <= c && rh <= r) {
-            if (arr[lh] <=  arr[rh]) tmpArr[h++] = arr[lh++]; // 左半边元素较小，放入 tmpArr
-            else tmpArr[h++] = arr[rh++]; // 右半边元素较小，放入 tmpArr
+
+    // 将 nums[left..mid] 和 nums[mid+1..right] 两个有序子数组合并成一个有序数组
+    private void merge(int[] nums, int left, int mid, int right, int[] temp) {
+        // 归并过程：使用三个指针 i, j, k 分别指向左半部分、右半部分和 temp 数组的当前位置
+        int i = left, j = mid + 1, k = left;
+
+        // 比较两个子数组的当前元素，将较小的元素放入 temp 数组，并移动对应的指针
+        while (i <= mid && j <= right) {
+            if (nums[i] <= nums[j]) {
+                temp[k++] = nums[i++];
+            } else {
+                temp[k++] = nums[j++];
+            }
         }
-        while (lh <= c) tmpArr[h++] = arr[lh++]; // 左半边还有剩余，加入 tmpArr 末尾
-        while (rh <= r) tmpArr[h++] = arr[rh++]; // 右半边还有剩余，加入 tmpArr 末尾
-        for(; l <= r; l++) arr[l] = tmpArr[l]; // 将 tmpArr 拷回 arr 中
+        // 将左半部分剩余的元素（如果有）放入 temp 数组
+        while (i <= mid) {
+            temp[k++] = nums[i++];
+        }
+        // 将右半部分剩余的元素（如果有）放入 temp 数组
+        while (j <= right) {
+            temp[k++] = nums[j++];
+        }
+        // 将 temp 数组中的元素复制回 nums 数组的对应位置
+        for (int p = left; p <= right; p++) {
+            nums[p] = temp[p];
+        }
     }
 }
