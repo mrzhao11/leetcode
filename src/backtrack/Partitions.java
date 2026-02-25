@@ -54,6 +54,7 @@ public class Partitions {
     // pointnum表示已经放置了几个点
     private static void backTracking(StringBuilder s, int startIndex, int pointnum) {
         if (pointnum == 3) {
+            // 为什么不直接添加呢？因为最后一个点后面还要验证一下是否合法
             if (isValid(s, startIndex, s.length() - 1)) {
                 result.add(s.toString());
             }
@@ -82,6 +83,43 @@ public class Partitions {
         return true;
     }
 
+    // 给出一个表示数字的字符串，将其分隔为5个片段，均不大于数字600，输出所有可能的划分组合.
+    // 例如123622349237可以划分为1 236 22 349 237.
+    public static List<List<String>> partition5(String s) {
+        List<List<String>> res = new ArrayList<>();
+        List<String> path = new ArrayList<>();
+        backtracking5(s, 0, path, res);
+        return res;
+    }
+
+    private static void backtracking5(String s, int startIndex, List<String> path, List<List<String>> res) {
+        if (path.size() == 5) {
+            if (startIndex == s.length()) {
+                res.add(new ArrayList<>(path));
+            }
+            return;
+        }
+        for (int i = startIndex; i < s.length(); i++) {
+            String sub = s.substring(startIndex, i + 1);
+            if (isValid(sub)) {
+                path.add(sub);
+                backtracking5(s, i + 1, path, res);
+                path.remove(path.size() - 1);
+            } else {
+                break;
+            }
+        }
+    }
+
+    // 判断字符串是否是一个合法的数字片段，不能以0开头且数值不大于600
+    public static boolean isValid(String s) {
+        if (s.charAt(0) == '0' && s.length() > 1) // 不能以0开头且长度大于1
+            return false;
+        long num = Long.parseLong(s);
+        return num <= 600;
+    }
+
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         String s = scanner.nextLine();
@@ -91,5 +129,9 @@ public class Partitions {
         String sb = "25525511135";
         List<String> res = restoreIpAddresses(sb);
         System.out.println(res);
+
+        String s2 = "123622349237";
+        List<List<String>> res2 = partition5(s2);
+        System.out.println(res2);
     }
 }
