@@ -1,6 +1,9 @@
 package hashtable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 
 public class ThreeSum {
 
@@ -36,6 +39,34 @@ public class ThreeSum {
         return ans;
     }
 
+    // 三数之和最接近
+    // 给定一个包括 n 个整数的数组 nums 和 一个目标值 target。找出 nums 中的三个整数，使得它们的和与 target 最接近。
+    // 返回这三个数的和。假定每组输入只存在唯一答案。
+    public static int threesumcloset(int[] nums, int target) {
+        Arrays.sort(nums); // 排序
+        int ans = nums[0] + nums[1] + nums[2]; // 初始化为前三个数的和
+        for (int i = 0; i < nums.length - 2; i++) {
+            int left = i + 1;
+            int right = nums.length - 1;
+            while (left < right) {
+                int sum = nums[i] + nums[left] + nums[right];
+                if (sum == target) return sum; // 直接返回，因为已经是最接近的了
+
+                // 如果当前的 sum 更接近 target，就更新 ans
+                if (Math.abs(sum - target) < Math.abs(ans - target)) {
+                    ans = sum;
+                }
+                // 根据 sum 与 target 的关系移动指针
+                if (sum > target) {
+                    right--;
+                } else {
+                    left++;
+                }
+            }
+        }
+        return ans;
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
@@ -43,8 +74,10 @@ public class ThreeSum {
         for (int i = 0; i < n; i++) {
             nums[i] = sc.nextInt();
         }
+        int target = sc.nextInt();
         List<List<Integer>> res = threesum(nums);
         System.out.println(res);
+        System.out.println(threesumcloset(nums, target));
     }
 }
 
