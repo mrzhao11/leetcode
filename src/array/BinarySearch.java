@@ -122,6 +122,38 @@ public class BinarySearch {
         }
         return left - 1;
     }
+
+    // 有序矩阵中的第K小元素
+    // 给你一个 n x n 的矩阵 matrix ，其中每行和每列元素均按升序排序，请你找出并返回这个矩阵中第 k 小的元素。
+    // 思想：二分法，先确定二分的范围，即矩阵中的最小值和最大值，然后在这个范围内进行二分查找。
+    // 每次计算中间值 mid 后，统计矩阵中小于等于 mid 的元素个数，如果个数大于等于 k，则说明第 k 小的元素在左半部分，否则在右半部分。
+    public int kthSmallest(int[][] matrix, int k) {
+        int n = matrix.length;
+        int left = matrix[0][0];
+        int right = matrix[n - 1][n - 1];
+        while (left <= right) {
+            int mid = left + ((right - left) >> 1);
+            if (check(matrix, mid, k, n)) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+
+    // 检查矩阵中小于等于mid的元素个数是否大于等于k
+    public boolean check(int[][] matrix, int mid, int k, int n) {
+        int count = 0;
+        int j = n - 1; // 从每行的最后一个元素开始统计
+        for (int i = 0; i < n; i++) {
+            while (j >= 0 && matrix[i][j] > mid) {
+                j--; // 如果当前元素大于mid，向左移动
+            }
+            count += (j + 1); // 统计当前行中小于等于mid的元素个数，j+1是因为j是索引，从0开始计数
+        }
+        return count >= k; // 如果个数大于等于k，说明第k小的元素在左半部分
+    }
 }
 
 
