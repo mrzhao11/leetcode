@@ -57,6 +57,26 @@ public class isNumber {
         return seenNum && seenNumAfterE;
     }
 
+    // 415. 字符串相加
+    // 给定两个字符串形式的非负整数 num1 和 num2，计算它们的和。
+    public String addStrings(String num1, String num2) {
+        int i = num1.length() - 1, j = num2.length() - 1, add = 0;
+        StringBuilder ans = new StringBuilder();
+        while (i >= 0 || j >= 0 || add != 0) {
+            // 取出当前位的数字，如果没有则为 0
+            int x = i >= 0 ? num1.charAt(i) - '0' : 0;
+            int y = j >= 0 ? num2.charAt(j) - '0' : 0;
+            int result = x + y + add; // 当前位的结果
+            ans.append(result % 10); // 将当前位的结果添加到答案中
+            add = result / 10; // 计算下一位的进位
+            i--;
+            j--;
+        }
+        // 计算完以后的答案需要翻转过来
+        ans.reverse();
+        return ans.toString();
+    }
+
     public static void main(String[] args) {
         String[] testCases = {"0", " 0.1 ", "abc", "1 a", "2e10", ".1", "3.", "+.8", "-.9", "6e-1", "99e2.5"};
         for (String test : testCases) {
