@@ -36,17 +36,18 @@ public class rain {
         int[] maxLeft = new int[height.length]; // 记录每个位置左侧最高
         int[] maxRight = new int[height.length]; // 记录每个位置右侧最高
 
-        maxLeft[0] = height[0]; // 初始化左侧最高
+        maxLeft[0] = 0; // 初始化左侧最高
         for (int i = 1; i < height.length; i++) {
             maxLeft[i] = Math.max(maxLeft[i - 1], height[i - 1]); // 当前位置左侧最高等于前一个位置左侧最高和前一个位置高度的较大值
         }
-        maxRight[height.length - 1] = height[height.length - 1];// 初始化右侧最高
+        maxRight[height.length - 1] = 0; // 初始化右侧最高
         for (int i = height.length - 2; i >= 0; i--) {
             maxRight[i] = Math.max(maxRight[i + 1], height[i + 1]); // 当前位置右侧最高等于后一个位置右侧最高和后一个位置高度的较大值
         }
         int sum = 0;
         for (int i = 0; i < height.length; i++) {
             int h = Math.min(maxLeft[i], maxRight[i]) - height[i];
+            // 当h小于等于0时，说明当前位置不能存水，h大于0时才累加到总和中
             if (h > 0) {
                 sum += h;
             }

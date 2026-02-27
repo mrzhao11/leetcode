@@ -59,6 +59,7 @@ public class SetMatrixZero {
             }
         }
         // 最后根据标记将第一行和第一列置0
+        // 如果标记为true，说明第一列或第一行有0，需要将其置0
         if (flagCol0) {
             for (int i = 0; i < m; i++) {
                 matrix[i][0] = 0;
