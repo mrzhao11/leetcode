@@ -7,36 +7,7 @@ public class MergeKSortList {
     public static ListNode mergeKLists(ListNode[] lists) {
         return merge(lists, 0, lists.length - 1);
     }
-
-    // 优先队列法
-    // 链表本身是有序的，那么全局最小值一定在各个链表的头节点中，因此我们可以使用一个最小堆（优先队列）来存储各个链表的头节点
-    public static ListNode mergeKListsPQ(ListNode[] lists) {
-        if(lists == null || lists.length == 0) return null;
-        // 优先队列（最小值优先），按节点值排序
-        PriorityQueue<ListNode> pq =
-                new PriorityQueue<>((a, b) -> Integer.compare(a.val, b.val));
-
-        for(ListNode list : lists) {
-            if(list != null) {
-                pq.offer(list);
-            }
-        }
-
-        ListNode dummy = new ListNode(0);
-        ListNode cur = dummy;
-
-        // 不断取出最小节点，加入结果链表
-        while(!pq.isEmpty()) {
-            ListNode node = pq.poll(); // 取出最小节点
-            cur.next = node;
-            cur = cur.next;
-            if(node.next != null) {
-                pq.offer(node.next); // 把最小节点的下一个节点加入优先队列
-            }
-        }
-        return dummy.next;
-    }
-
+    // lists 是包含 k 个链表头节点的数组，left 和 right 分别是当前处理的链表范围的左右边界
     public static ListNode merge(ListNode[] lists, int left, int right) {
         // 递归终止条件
         // 如果 left 超过 right，说明没有链表可合并，返回 null
@@ -72,6 +43,35 @@ public class MergeKSortList {
             tail.next = l2;
         }
 
+        return dummy.next;
+    }
+
+    // 优先队列法
+    // 链表本身是有序的，那么全局最小值一定在各个链表的头节点中，因此我们可以使用一个最小堆（优先队列）来存储各个链表的头节点
+    public static ListNode mergeKListsPQ(ListNode[] lists) {
+        if(lists == null || lists.length == 0) return null;
+        // 优先队列（最小值优先），按节点值排序，需要实现 Comparator 接口，比较节点值，因为 ListNode 没有实现 Comparable 接口
+        PriorityQueue<ListNode> pq =
+                new PriorityQueue<>((a, b) -> Integer.compare(a.val, b.val));
+
+        for(ListNode list : lists) {
+            if(list != null) {
+                pq.offer(list);
+            }
+        }
+
+        ListNode dummy = new ListNode(0);
+        ListNode cur = dummy;
+
+        // 不断取出最小节点，加入结果链表
+        while(!pq.isEmpty()) {
+            ListNode node = pq.poll(); // 取出最小节点
+            cur.next = node;
+            cur = cur.next;
+            if(node.next != null) {
+                pq.offer(node.next); // 把最小节点的下一个节点加入优先队列
+            }
+        }
         return dummy.next;
     }
 

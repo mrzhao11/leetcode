@@ -88,7 +88,7 @@ public class SortList {
                     prev = prev.next;
                 }
 
-                curr = next;
+                curr = next; // 移动到下一轮的起点
             }
         }
 

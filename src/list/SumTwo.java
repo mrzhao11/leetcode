@@ -2,30 +2,44 @@ package list;
 
 public class SumTwo {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        // 虚拟头节点
-        ListNode dummy = new ListNode(0);
-        ListNode cur = dummy;
-        int carry = 0; // 进位
-
-        // 遍历两个链表
-        while(l1 != null || l2 != null || carry != 0) {
-            int sum = carry; // 当前位的和
-            if(l1 != null) {
-                sum += l1.val;
-                l1 = l1.next;
-            }
-            if(l2 != null) {
-                sum += l2.val;
-                l2 = l2.next;
-            }
-
-            // 计算新的进位和当前节点的值
-            // 例: sum = 15 -> carry = 1, node.val = 5
-            carry = sum / 10; // 更新进位
-            cur.next = new ListNode(sum % 10); // 创建新节点
-            cur = cur.next;
+        ListNode pre = new ListNode(-1); // 虚拟头节点
+        ListNode h = pre;
+        ListNode h1 = l1;
+        ListNode h2 = l2;
+        int cur = 0;
+        int next = 0;
+        while (h1 != null && h2 != null) {
+            cur = h1.val + h2.val + next;
+            next = cur / 10; // 进位
+            cur = cur % 10; // 当前位的值
+            h.next = new ListNode(cur);
+            h1 = h1.next;
+            h2 = h2.next;
+            h = h.next;
         }
-        return dummy.next;
+        // 如果两个链表长度不一样，继续处理剩余的部分
+        while (h1 != null) {
+            cur = h1.val + next;
+            next = cur / 10;
+            cur = cur % 10;
+            h.next = new ListNode(cur);
+            h1 = h1.next;
+            h = h.next;
+        }
+        while (h2 != null) {
+            cur = h2.val + next;
+            next = cur / 10;
+            cur = cur % 10;
+            h.next = new ListNode(cur);
+            h2 = h2.next;
+            h = h.next;
+        }
+        // 最后如果还有进位，添加一个新的节点
+        if (next != 0) {
+            h.next = new ListNode(next);
+        }
+
+        return pre.next;
     }
 
     public static void main(String[] args) {

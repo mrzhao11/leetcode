@@ -67,20 +67,27 @@ public class ReverseList {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        // 输入链表长度
-        int n = sc.nextInt();
-        int[] arr = new int[n];
-        for (int i = 0; i < n; i++) {
-            arr[i] = sc.nextInt();
+        // 读取多组数据，直到输入结束
+        while (sc.hasNextInt()) {
+            int n = sc.nextInt();
+
+            if (n == 0) {
+                System.out.println("list is empty");
+                continue; // 跳过本次循环，继续看下一组数据
+            }
+
+            int[] arr = new int[n];
+            for (int i = 0; i < n; i++) {
+                arr[i] = sc.nextInt();
+            }
+
+            // 1. 构建并打印原链表
+            ListNode head = buildList(arr);
+            printList(head);
+
+            // 2. 反转并打印新链表
+            ListNode newHead = reverseList(head);
+            printList(newHead);
         }
-
-        // 构建链表
-        ListNode head = buildList(arr);
-
-        // 反转链表
-        ListNode newHead = reverseList(head);
-
-        // 输出结果
-        printList(newHead);
     }
 }
