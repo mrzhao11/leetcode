@@ -13,6 +13,7 @@ public class ThreeSum {
     public static List<List<Integer>> threesum(int[] nums) {
         List<List<Integer>> ans = new ArrayList<>();
         Arrays.sort(nums);
+        // 遍历从 0 到 n-3 的每个元素，作为三元组中的第一个元素
         for (int i = 0; i < nums.length - 2; i++) {
             // 跳过重复的nums[i]
             if (i > 0 && nums[i] == nums[i - 1]) continue;
