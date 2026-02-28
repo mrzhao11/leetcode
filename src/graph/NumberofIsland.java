@@ -71,7 +71,7 @@ public class NumberofIsland {
         // 队列储存待访问的节点
         Queue<int[]> q = new ArrayDeque<>();
         q.offer(new int[] { x, y });
-        grid[x][y] = '0';
+        grid[x][y] = '0'; // 标记为已访问
         while (!q.isEmpty()) {
             int[] cur = q.poll();
             for (int[] d : dirs) {

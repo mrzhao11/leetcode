@@ -1,5 +1,7 @@
 package graph;
 
+import java.util.Scanner;
+
 public class SearchWord {
     // 79. 单词搜索
     // 给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。如果 word 存在于网格中，返回 true ；否则，返回 false 。
@@ -46,12 +48,24 @@ public class SearchWord {
     }
 
     public static void main(String[] args) {
-        char[][] board = {
-                {'A','B','C','E'},
-                {'S','F','C','S'},
-                {'A','D','E','E'}
-        };
-        String word = "ABCCED";
+        Scanner sc = new Scanner(System.in);
+        // 输入：m 行 n 列的字符网格 + 待搜索单词
+        int m = sc.nextInt();
+        int n = sc.nextInt();
+        char[][] board = new char[m][n];
+        for (int i = 0; i < m; i++) {
+            String row = sc.next();
+            for (int j = 0; j < n; j++) {
+                board[i][j] = row.charAt(j);
+            }
+        }
+        String word = sc.next(); // 读取待搜索单词
+        // 输入示例：
+        // 3 4
+        // ABCE
+        // SFCS
+        // ADEE
+        // SEE
         System.out.println(exist(board, word)); // true
     }
 }
