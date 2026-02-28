@@ -50,10 +50,10 @@ public class Trie {
     public boolean search(String word) {
         TrieNode node = root;
         for (char c : word.toCharArray()) {
-            node = node.children.get(c);
-            if (node == null) {
+            if (!node.children.containsKey(c)) {
                 return false;  // 没有找到对应的子节点，返回false
             }
+            node = node.children.get(c); // 移动到子节点
         }
         return node.isEnd;  // 最后一个节点是否是单词的结尾
     }
@@ -62,10 +62,10 @@ public class Trie {
     public boolean startsWith(String prefix) {
         TrieNode node = root;
         for (char c : prefix.toCharArray()) {
-            node = node.children.get(c);
-            if (node == null) {
+            if (!node.children.containsKey(c)) {
                 return false;  // 没有找到对应的子节点，返回false
             }
+            node = node.children.get(c); // 移动到子节点
         }
         return true;  // 遍历完成后，说明有单词以prefix为前缀
     }
