@@ -95,6 +95,8 @@ public class CourseSchedule {
 
         Queue<Integer> queue = new ArrayDeque<>();
         int count = 0;
+        // 假如需要返回课程的学习顺序，可以在这里定义一个数组来存储结果
+//        int[] res = new int[numCourses]; // 存储课程的学习顺序
 
         // 把所有入度为 0 的课程加入队列
         for (int i = 0; i < numCourses; i++) {
@@ -107,6 +109,7 @@ public class CourseSchedule {
         while (!queue.isEmpty()) {
             int course = queue.poll();
             count++;
+            // res[count++] = course; // 记录课程的学习顺序
             // 找到当前course的所有后续课程
             for (int nextCourse : graph.get(course)) {
                 indegree[nextCourse]--; // 学完当前课程，后续课程的入度减 1
@@ -116,6 +119,8 @@ public class CourseSchedule {
             }
         }
 
+        // 如果需要返回课程的学习顺序，可以在这里判断是否所有课程都被处理过，并返回结果
+//        return count == numCourses ? res : new int[0];
         // 如果所有课程都被处理过，返回 true，否则返回 false
         return count == numCourses;
     }
