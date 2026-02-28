@@ -48,4 +48,53 @@ public class merge {
         }
         return root1;
     }
+
+    public static TreeNode buildTree(Integer[] arr) {
+        if (arr.length == 0 || arr[0] == null) return null;
+
+        TreeNode root = new TreeNode(arr[0]);
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+
+        int i = 1; // 从数组第二个元素开始，依次为每个节点添加左右孩子
+
+        while (!queue.isEmpty() && i < arr.length) {
+            TreeNode curr = queue.poll();
+
+            // 左孩子
+            if (i < arr.length && arr[i] != null) {
+                curr.left = new TreeNode(arr[i]);
+                queue.offer(curr.left);
+            }
+            i++;
+
+            // 右孩子
+            if (i < arr.length && arr[i] != null) {
+                curr.right = new TreeNode(arr[i]);
+                queue.offer(curr.right);
+            }
+            i++;
+        }
+
+        return root;
+    }
+
+    public static void main(String[] args) {
+        Integer[] arr1 = {1,3,2,5};
+        Integer[] arr2 = {2,1,3,null,4,null,7};
+        TreeNode root1 = buildTree(arr1);
+        TreeNode root2 = buildTree(arr2);
+        TreeNode mergedRoot = mergeTreesIter(root1, root2);
+        // 输出合并后的树的层序遍历结果
+        System.out.println("Merged Tree Level Order Traversal:");
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(mergedRoot);
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            System.out.print(node.val + " ");
+            if (node.left != null) queue.offer(node.left);
+            if (node.right != null) queue.offer(node.right);
+        }
+        // 输出应该是：3 4 5 5 4 null 7
+    }
 }
