@@ -1,5 +1,9 @@
 package BinaryTree;
 
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
 public class MaxPathSum {
     // 二叉树中的最大路径和
     // 路径 被定义为一条从树中任意节点出发，沿父节点-子节点连接，达到任意节点的序列。
@@ -42,12 +46,52 @@ public class MaxPathSum {
         return can;
     }
 
+    // 从数组构建二叉树的辅助函数，方便测试
+    public static TreeNode buildTree(Integer[] arr) {
+        if (arr.length == 0 || arr[0] == null) return null;
+
+        TreeNode root = new TreeNode(arr[0]);
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+
+        int i = 1; // 从数组第二个元素开始，依次为每个节点添加左右孩子
+
+        while (!queue.isEmpty() && i < arr.length) {
+            TreeNode curr = queue.poll();
+
+            // 左孩子
+            if (i < arr.length && arr[i] != null) {
+                curr.left = new TreeNode(arr[i]);
+                queue.offer(curr.left);
+            }
+            i++;
+
+            // 右孩子
+            if (i < arr.length && arr[i] != null) {
+                curr.right = new TreeNode(arr[i]);
+                queue.offer(curr.right);
+            }
+            i++;
+        }
+
+        return root;
+    }
+
     public static void main(String[] args) {
-        TreeNode root = new TreeNode(-10);
-        root.left = new TreeNode(9);
-        root.right = new TreeNode(20);
-        root.right.left = new TreeNode(15);
-        root.right.right = new TreeNode(7);
+//        TreeNode root = new TreeNode(-10);
+//        root.left = new TreeNode(9);
+//        root.right = new TreeNode(20);
+//        root.right.left = new TreeNode(15);
+//        root.right.right = new TreeNode(7);
+        Scanner sc = new Scanner(System.in);
+        String input = sc.nextLine();
+        String[] parts = input.split(",");
+        Integer[] arr = new Integer[parts.length];
+        for (int i = 0; i < parts.length; i++) {
+            String part = parts[i].trim();
+            arr[i] = part.equals("null") ? null : Integer.parseInt(part);
+        }
+        TreeNode root = buildTree(arr);// 示例输入：-10,9,20,null,null,15,7
 
         MaxPathSum solution = new MaxPathSum();
         int result = solution.maxPathSum(root);
