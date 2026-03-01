@@ -13,13 +13,13 @@ public class BuyStock {
         // 可以把所有的上升区间的利润都加起来，得到最大利润
         int res = 0;
         if (prices.length == 1) return res;
-        int[] sub = new int[prices.length - 1];
+        int[] sub = new int[prices.length - 1]; // 存储每天的价格差值
         int idx = 0;
         for (int i = 1; i < prices.length; i++) {
             sub[idx++] = prices[i] - prices[i - 1];
         }
         for (int i = 0; i < sub.length; i++) {
-            if (sub[i] > 0) res += sub[i];
+            if (sub[i] > 0) res += sub[i]; // 只加上升区间的利润
         }
         return res;
     }

@@ -30,6 +30,20 @@ public class BuyandSellStock {
         // 最后一天不持有股票时的利润最大
         return dp[n-1][1];
     }
+    public static int maxProfit1dp(int[] prices) {
+        int minPrice = Integer.MAX_VALUE;
+        int maxProfit = 0;
+        for (int price : prices) {
+            // 如果当前价格比之前的最低价格还低，更新最低价格
+            if (price < minPrice) {
+                minPrice = price;
+                // 如果当前价格与之前的最低价格的差值比之前的最大利润还大，更新最大利润
+            } else if (price - minPrice > maxProfit) {
+                maxProfit = price - minPrice;
+            }
+        }
+        return maxProfit;
+    }
 
     // 122. 买卖股票的最佳时机 II
     // 允许多次买卖股票

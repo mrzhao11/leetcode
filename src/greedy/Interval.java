@@ -86,7 +86,8 @@ public class Interval {
         }
         int left = 0, right = 0; // 记录当前片段的左右边界
         for (int i = 0; i < s.length(); i++) {
-            right = Math.max(right, end[s.charAt(i) - 'a']); // 更新右边界
+            // 更新右边界为当前字母最后出现的位置的最大值
+            right = Math.max(right, end[s.charAt(i) - 'a']);
             if (i == right) { // 到达当前片段的右边界
                 res.add(right - left + 1); // 计算片段长度并加入结果列表
                 left = i + 1; // 更新左边界

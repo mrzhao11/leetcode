@@ -5,10 +5,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+// 一般startIndex是为了控制树枝的选择，更多的是解决顺序无关的组合问题，确保在同一层树枝上不会重复选择之前的元素，从而避免重复组合
+// 而used数组是为了控制树层的选择，更多的是解决顺序有关的排列问题，确保在同一层树层上不会重复选择之前的元素，从而避免重复排列
+
+// 二者核心区别在于：
+// startIndex主要用于组合/子集问题，确保在同一层树枝上不会重复选择之前的元素，从而避免重复组合
+// used数组主要用于排列问题，确保在同一层树层上不会重复选择之前的元素，从而避免重复排列
+
 // startIndex 代表本层搜索从哪个位置开始，控制后面只能往右选，不能往回选
 // backtracking(n,k,i)代表允许重复使用当前元素
 // backtracking(n,k,i+1)代表不允许重复使用当前元素
-
 public class combinations {
     // 给定两个整数 n 和 k，返回范围 [1, n] 中所有可能的 k 个数的组合。
     static List<List<Integer>> result= new ArrayList<>();

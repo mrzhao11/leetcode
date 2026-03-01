@@ -1,5 +1,6 @@
 package sort;
 
+import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -130,15 +131,19 @@ public class quicksort {
 class Solution {
     public int findKthLargest(int[] nums, int k) {
         int n = nums.length;
-        return quickSelect3(nums, 0, n - 1, n - k);
+        return quickSelect3(nums, 0, n - 1, n - k); // 第 k 大元素在排序后数组中的索引为 n - k
     }
 
     // 三路快排思想的快速选择算法
+    // arr：输入数组
+    // l：当前处理的子数组的左边界
+    // r：当前处理的子数组的右边界
+    // target：我们要找到的第 k 大元素在排序后数组中的索引
     private int quickSelect3(int[] arr, int l, int r, int target) {
         if (l == r) return arr[l]; // 递归终止条件
 
         // 随机选择一个轴，并交换到最左边
-        int idx = ThreadLocalRandom.current().nextInt(l, r + 1);
+        int idx = ThreadLocalRandom.current().nextInt(l, r + 1); // 在 [l, r] 范围内的随机值
         swap(arr, l, idx);
         int pivot = arr[l];
 
@@ -180,5 +185,25 @@ class Solution {
         int tmp = arr[i];
         arr[i] = arr[j];
         arr[j] = tmp;
+    }
+
+    // 最小堆解法
+    public int findKthLargestHeap(int[] nums, int k) {
+        // 创建一个小顶堆，限制大小为 k
+        PriorityQueue<Integer> pq = new PriorityQueue<>(k);
+
+        for (int num : nums) {
+            if (pq.size() < k) {
+                // 1. 如果堆还没满，直接加进去
+                pq.offer(num);
+            } else if (num > pq.peek()) {
+                // 2. 如果堆满了，且当前元素比堆顶大
+                pq.poll();    // 弹出最小的（第 k+1 大及以后）
+                pq.offer(num); // 加入当前的，保持堆里依然是目前最大的 k 个
+            }
+        }
+
+        // 遍历结束，堆顶就是第 k 大
+        return pq.peek();
     }
 }

@@ -10,15 +10,13 @@ public class TopKFrequentElements {
             mp.put(nums[i], mp.getOrDefault(nums[i], 0) + 1);
         }
         // 建立一个小顶堆，然后遍历「出现次数数组」，将每个数字的出现次数与堆顶元素进行比较。
-
         PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> mp.get(a) - mp.get(b));
         for (int key : mp.keySet()) {
             // 如果堆的元素个数小于 k，就可以直接插入堆中。
             if (pq.size() < k) {
                 pq.offer(key);
             }
-            // 如果堆的元素个数等于 k，就需要将当前数字的出现次数与堆顶元素的出现次数进行比较。
-            // 如果堆顶元素的出现次数更大，说明当前数字的出现次数不够大，无法进入堆中；否则，就将堆顶元素弹出，并将当前数字插入堆中。
+            // 如果堆的元素个数大于等于 k，就需要将当前元素的出现次数与堆顶元素的出现次数进行比较。
             else if (mp.get(pq.peek()) < mp.get(key)) {
                 pq.poll();
                 pq.offer(key);
@@ -30,6 +28,43 @@ public class TopKFrequentElements {
         }
         return res;
     }
+
+    // 也可以使用桶排序，建立一个「桶」
+    // 其中第 i 个桶存储出现次数为 i 的数字。由于一个数字出现的次数不可能超过 n，因此桶的大小为 n+1。
+    public static int[] topKFrequent2(int[] nums, int k) {
+        Map<Integer, Integer> mp = new HashMap<>(); // 统计每个数字出现的次数
+        for (int i = 0; i < nums.length; i++) {
+            mp.put(nums[i], mp.getOrDefault(nums[i], 0) + 1);
+        }
+
+        // 建立一个桶，其中第 i 个桶存储出现次数为 i 的数字
+        List<Integer>[] bucket = new List[nums.length + 1];
+        for (int key : mp.keySet()) {
+            int freq = mp.get(key);
+            if (bucket[freq] == null) {
+                bucket[freq] = new ArrayList<>();
+            }
+            bucket[freq].add(key);
+        }
+
+        int[] res = new int[k];
+        int index = 0; // 记录结果数组的索引
+        // 外层循环从后往前遍历桶
+        for (int i = bucket.length - 1; i >= 0 && index < k; i--) {
+            if (bucket[i] != null) {
+                // 内层循环遍历当前桶中的数字
+                for (int num : bucket[i]) {
+                    res[index++] = num;
+                    if (index == k) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
+
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
