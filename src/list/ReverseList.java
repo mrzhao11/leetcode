@@ -66,28 +66,37 @@ public class ReverseList {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-
-        // 读取多组数据，直到输入结束
-        while (sc.hasNextInt()) {
-            int n = sc.nextInt();
-
-            if (n == 0) {
-                System.out.println("list is empty");
-                continue; // 跳过本次循环，继续看下一组数据
-            }
-
-            int[] arr = new int[n];
-            for (int i = 0; i < n; i++) {
-                arr[i] = sc.nextInt();
-            }
-
-            // 1. 构建并打印原链表
-            ListNode head = buildList(arr);
-            printList(head);
-
-            // 2. 反转并打印新链表
-            ListNode newHead = reverseList(head);
-            printList(newHead);
+        int n = sc.nextInt();
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
         }
+        ListNode head = buildList(arr);
+        printList(head);
+        ListNode newHead = reverseList(head);
+        printList(newHead);
+
+//        // 读取多组数据，直到输入结束
+//        while (sc.hasNextInt()) {
+//            int n = sc.nextInt();
+//
+//            if (n == 0) {
+//                System.out.println("list is empty");
+//                continue; // 跳过本次循环，继续看下一组数据
+//            }
+//
+//            int[] arr = new int[n];
+//            for (int i = 0; i < n; i++) {
+//                arr[i] = sc.nextInt();
+//            }
+//
+//            // 1. 构建并打印原链表
+//            ListNode head = buildList(arr);
+//            printList(head);
+//
+//            // 2. 反转并打印新链表
+//            ListNode newHead = reverseList(head);
+//            printList(newHead);
+//        }
     }
 }
