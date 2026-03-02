@@ -137,6 +137,34 @@ public class Traversal {
         }
         return levels;
     }
+    // 如果是锯齿层序遍历（zigzag）
+    // 则在迭代的基础上，增加一个 boolean 变量 isLefttoRight 来控制当前层的添加顺序
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+        }
+        Deque<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        boolean isLefttoRight = true;
+        while (!q.isEmpty()) {
+            int size = q.size();
+            List<Integer> lv = new ArrayList<>(size);
+            for (int i = 0; i < size; i++) {
+                TreeNode node = q.poll();
+                if(isLefttoRight){
+                    lv.addLast(node.val);
+                }else{
+                    lv.addFirst(node.val);
+                }
+                if (node.left != null) q.offer(node.left);
+                if (node.right != null) q.offer(node.right);
+            }
+            isLefttoRight = !isLefttoRight;
+            res.add(lv);
+        }
+        return res;
+    }
 
 
     // ================= 构建树（层序数组）=================
