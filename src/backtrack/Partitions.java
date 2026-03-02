@@ -52,6 +52,7 @@ public class Partitions {
     }
 
     // pointnum表示已经放置了几个点
+    // startIndex表示本次搜索的起始位置，当前这一刀切从startIndex开始
     private static void backTracking(StringBuilder s, int startIndex, int pointnum) {
         if (pointnum == 3) {
             // 为什么不直接添加呢？因为最后一个点后面还要验证一下是否合法
