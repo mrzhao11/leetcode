@@ -2,6 +2,7 @@ package thread;
 
 import java.util.concurrent.Semaphore;
 
+// 三个线程交替打印A、B、C
 public class PrintABC {
 
     private final Semaphore semA = new Semaphore(1); // 信号量A设置为1,从A开始打印
