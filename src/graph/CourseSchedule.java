@@ -14,6 +14,7 @@ public class CourseSchedule {
     // 请你判断是否可能完成所有课程的学习？如果可以，返回 true；否则返回 false 。
 
     // 拓扑排序，检测有向图中是否有环，如果有环则无法完成课程
+
     // DFS解法
     // 从每门课程出发，进行深度优先搜索（DFS），遍历所有课程
     // 如果遇到正在访问的课程，说明存在环，返回 false
@@ -94,7 +95,7 @@ public class CourseSchedule {
         // indegree[0] = 1 表示课程 0 有 1 门先修课程，indegree 下标表示课程，值表示入度
 
         Queue<Integer> queue = new ArrayDeque<>();
-        int count = 0;
+        int count = 0; // 记录已经处理过的课程数量
         // 假如需要返回课程的学习顺序，可以在这里定义一个数组来存储结果
 //        int[] res = new int[numCourses]; // 存储课程的学习顺序
 

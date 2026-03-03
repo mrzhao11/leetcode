@@ -134,7 +134,88 @@ public class SortList {
         return dummy.next;
     }
 
+    // 有序链表按照绝对值排序
+    // 一个从小到大排序的有序链表（正负都有），要求按照绝对值排序输出
+    // 示例：输入 -3 → -2 → -1 → 0 → 1 → 2 → 3，输出 0 → -1 → 1 → -2 → 2 → -3 → 3
+    public ListNode sortByAbs(ListNode head) {
+        if (head == null || head.next == null) return head;
+
+        // 1️⃣ 找到第一个非负数
+        ListNode prev = null;
+        ListNode curr = head;
+
+        while (curr != null && curr.val < 0) {
+            prev = curr;
+            curr = curr.next;
+        }
+
+        // 如果没有负数或没有正数
+        if (prev == null || curr == null) {
+            return head;
+        }
+
+        // 2️⃣ 断开负数和正数
+        prev.next = null;
+
+        // 3️⃣ 反转负数链表
+        ListNode neg = reverse(head);
+        ListNode pos = curr;
+
+        // 4️⃣ 按绝对值归并
+        return mergeByAbs(neg, pos);
+    }
+
+    private ListNode reverse(ListNode head) {
+        ListNode prev = null;
+        while (head != null) {
+            ListNode next = head.next;
+            head.next = prev;
+            prev = head;
+            head = next;
+        }
+        return prev;
+    }
+
+    private ListNode mergeByAbs(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(0);
+        ListNode tail = dummy;
+
+        while (l1 != null && l2 != null) {
+            if (Math.abs(l1.val) <= Math.abs(l2.val)) {
+                tail.next = l1;
+                l1 = l1.next;
+            } else {
+                tail.next = l2;
+                l2 = l2.next;
+            }
+            tail = tail.next;
+        }
+
+        tail.next = (l1 != null) ? l1 : l2;
+
+        return dummy.next;
+    }
+
     public static void main(String[] args) {
+        // 测试absolute value排序
+        SortList sortList = new SortList();
+        ListNode headAbs = new ListNode(-3);
+        headAbs.next = new ListNode(-2);
+        headAbs.next.next = new ListNode(-1);
+        headAbs.next.next.next = new ListNode(0);
+        headAbs.next.next.next.next = new ListNode(1);
+        headAbs.next.next.next.next.next = new ListNode(2);
+        headAbs.next.next.next.next.next.next = new ListNode(3);
+
+        ListNode resultAbs = sortList.sortByAbs(headAbs);
+        // 输出结果
+        while(resultAbs != null) {
+            System.out.print(resultAbs.val + " ");
+            resultAbs = resultAbs.next;
+        }
+        System.out.println(); // 输出结果：0 -1 1 -2 2 -3 3
+
+
         // 测试代码
         ListNode head = new ListNode(4);
         head.next = new ListNode(2);
