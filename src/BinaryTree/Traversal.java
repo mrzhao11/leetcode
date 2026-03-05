@@ -81,7 +81,6 @@ public class Traversal {
     }
 
     // ---------- 后序：迭代（反转法）----------
-    // 逻辑：用类似前序遍历(根-右-左)，最后整体 reverse -> 左-右-根
     public static List<Integer> postorderTraversalIter(TreeNode root) {
         List<Integer> result = new ArrayList<>();
         if (root == null) return result;
@@ -90,7 +89,7 @@ public class Traversal {
         while (!st.isEmpty()) {
             TreeNode node = st.pop();
             result.add(node.val);            // 先收集 根-右-左 的顺序
-            if (node.left != null) st.push(node.left);   // 先压左、再压右 -> 出栈顺序为 右 再 左
+            if (node.left != null) st.push(node.left);   // 先压左、再压右 -> 出栈顺序为 根-右-左
             if (node.right != null) st.push(node.right);
         }
         Collections.reverse(result);         // 反转成 左-右-根（真·后序）
@@ -117,25 +116,25 @@ public class Traversal {
 
     // 迭代：BFS（队列），按层收集
     public static List<List<Integer>> levelOrderTraversalIter(TreeNode root) {
-        List<List<Integer>> levels = new ArrayList<>();
+        List<List<Integer>> res = new ArrayList<>();
         if (root == null) {
-            return levels;
+            return res;
         }
 
         Deque<TreeNode> q = new ArrayDeque<>();
-        q.offerLast(root);
+        q.offer(root);
         while (!q.isEmpty()) {
             int size = q.size();              // 当前层节点数
-            List<Integer> lv = new ArrayList<>(size);
+            List<Integer> path = new ArrayList<>(size);
             for (int i = 0; i < size; i++) {
-                TreeNode node = q.pollFirst();     // 出队当前层
-                lv.add(node.val);
+                TreeNode node = q.poll();     // 出队当前层
+                path.add(node.val);
                 if (node.left != null) q.offerLast(node.left);
                 if (node.right != null) q.offerLast(node.right);
             }
-            levels.add(lv);
+            res.add(path);
         }
-        return levels;
+        return res;
     }
     // 如果是锯齿层序遍历（zigzag）
     // 则在迭代的基础上，增加一个 boolean 变量 isLefttoRight 来控制当前层的添加顺序
@@ -173,11 +172,12 @@ public class Traversal {
         if (arr.length == 0 || arr[0] == null) return null;
 
         TreeNode root = new TreeNode(arr[0]);
+        // 这里使用 LinkedList 主要是可以存储 null，ArrayDeque 不允许存储 null
         Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
 
         int i = 1; // 从数组第二个元素开始，依次为每个节点添加左右孩子
-
+        // 如果队列不空且数组还有元素，则继续添加孩子节点
         while (!queue.isEmpty() && i < arr.length) {
             TreeNode curr = queue.poll();
 

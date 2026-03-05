@@ -4,7 +4,7 @@ package thread;
 public class ThreeThreadPrint {
 
     private static final Object LOCK = new Object(); // 锁对象,所有线程共享
-    private static int count = 0; // 共享变量,所有线程共享,需要保证可见性和原子性
+    private static volatile int count = 0; // 共享变量,所有线程共享,需要保证可见性和原子性
     private static final int MAX = 100; // 打印的最大值
 
     public static void main(String[] args) {

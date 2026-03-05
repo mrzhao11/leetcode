@@ -82,6 +82,7 @@ public class quicksort {
 
     // 三路快排
     // 三路快排：随机轴 + 三路划分
+    // 时间复杂度：平均 O(n log n)，最坏 O(n^2)（当所有元素相等时），但通过随机轴选择可以大大降低最坏情况发生的概率。
     public static int[] quickSort3(int[] arr) {
         if (arr.length < 2) return arr;
         quickSort(arr, 0, arr.length - 1);
