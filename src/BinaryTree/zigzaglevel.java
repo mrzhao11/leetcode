@@ -70,7 +70,8 @@ public class zigzaglevel {
 
         while (!queue.isEmpty()) {
             int size = queue.size();
-            LinkedList<Integer> level = new LinkedList<>();
+            // 这里使用 LinkedList 是为了方便在两端添加元素，ArrayList 只能在末尾添加
+            List<Integer> level = new LinkedList<>();
 
             for (int i = 0; i < size; i++) {
                 TreeNode node = queue.poll();
