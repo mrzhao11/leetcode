@@ -129,8 +129,8 @@ public class Traversal {
             for (int i = 0; i < size; i++) {
                 TreeNode node = q.poll();     // 出队当前层
                 path.add(node.val);
-                if (node.left != null) q.offerLast(node.left);
-                if (node.right != null) q.offerLast(node.right);
+                if (node.left != null) q.offer(node.left);
+                if (node.right != null) q.offer(node.right);
             }
             res.add(path);
         }
@@ -148,7 +148,7 @@ public class Traversal {
         boolean isLefttoRight = true;
         while (!q.isEmpty()) {
             int size = q.size();
-            List<Integer> lv = new ArrayList<>(size);
+            LinkedList<Integer> lv = new LinkedList<>(); // 双端队列，方便头尾添加
             for (int i = 0; i < size; i++) {
                 TreeNode node = q.poll();
                 if(isLefttoRight){
@@ -161,6 +161,7 @@ public class Traversal {
             }
             isLefttoRight = !isLefttoRight;
             res.add(lv);
+            // res.addAll(lv); // 如果题目要求返回 List<Integer>，则需要将 LinkedList 转成 ArrayList 再添加到结果中
         }
         return res;
     }

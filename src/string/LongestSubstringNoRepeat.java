@@ -17,10 +17,9 @@ public class LongestSubstringNoRepeat {
         for (int l = 0, r = 0; r < s.length(); r++) {
             char c = s.charAt(r);
 
-            // 如果有重复有可能在窗口内，也可能在窗口外
+            // 如果当前字符已经在窗口中出现过，左指针需要跳到上一次出现位置的下一个位置，保证窗口内没有重复字符
             if (map.containsKey(c)) {
-                // 字符c重复，保证c在窗口内只有一个，需要更新左指针位置
-                // 左指针只能右移，不能左移，因此这个重复字符可能已经排除在窗口外了，所以取最大值
+                // 注意：左指针只能向右移动，不能回退，所以需要取最大值
                 l = Math.max(l, map.get(c) + 1);
             }
 

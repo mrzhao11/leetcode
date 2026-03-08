@@ -82,8 +82,9 @@ public class combinations {
             res1.add(temp.toString());
             return;
         }
-        // 获取当前数字对应的字符串,digits.charAt(num) - '0'是将字符转换为对应的整数，如'2'转换为2
-        String str = numString[digits.charAt(num) - '0'];
+
+        int index = digits.charAt(num) - '0'; // 获取当前数字对应的索引
+        String str = numString[index]; // 获取当前数字对应的字符串
         // for循环枚举当前数字对应的字符串中的每个字符
         for (int i = 0; i < str.length(); i++) {
             temp.append(str.charAt(i));

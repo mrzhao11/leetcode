@@ -96,32 +96,24 @@ public class rain {
         st.push(0); // 第一个柱子（下标）入栈
         for (int i = 1; i < height.length; i++) {
 
-            if (height[i] < height[st.peek()]) {
-                // 当前柱子比栈顶低，入栈
-                st.push(i);
-            } else if (height[i] == height[st.peek()]) {
-                // 当前柱子和栈顶一样高，更新栈顶为当前柱子
-                st.pop();
-                st.push(i);
-            } else {
-                // 只要当前柱子比栈顶高，就可能形成凹槽，栈头第二个元素是左墙，栈头是凹槽底部，当前柱子是右墙
-                while (!st.isEmpty() && height[i] > height[st.peek()]) {
-                    int mid = st.pop(); // 凹槽底部
+            // 只要当前柱子比栈顶高，就可能形成凹槽，栈头第二个元素是左墙，栈头是凹槽底部，当前柱子是右墙
+            while (!st.isEmpty() && height[i] > height[st.peek()]) {
+                int mid = st.pop(); // 凹槽底部
 
-                    // 弹出后如果栈空，说明左边没有墙，不能接水
-                    if (st.isEmpty()) break;
+                // 弹出后如果栈空，说明左边没有墙，不能接水
+                if (st.isEmpty()) break;
 
-                    int left = st.peek(); // 左墙下标
+                int left = st.peek(); // 左墙下标
 
-                    // 凹槽高度 = min(左墙, 右墙) - 凹槽底
-                    int h = Math.min(height[left], height[i]) - height[mid];
+                // 凹槽高度 = min(左墙, 右墙) - 凹槽底
+                int h = Math.min(height[left], height[i]) - height[mid];
 
-                    // 凹槽宽度 = 右墙 - 左墙 - 1
-                    int w = i - left - 1;
+                // 凹槽宽度 = 右墙 - 左墙 - 1
+                int w = i - left - 1;
 
-                    sum += h * w;
-                }
+                sum += h * w;
             }
+
             // 当前柱子入栈
             st.push(i);
         }

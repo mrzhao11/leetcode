@@ -2,6 +2,8 @@ package backtrack;
 
 import java.util.*;
 
+// 回文串分割问题、IP地址复原问题、数字划分问题
+// 都是典型的回溯问题，使用startIndex控制树枝的选择，确保在同一层树枝上不会重复选择之前的元素，从而避免重复组合
 public class Partitions {
     // 给定一个字符串 s，将 s 分割成一些子串，使每个子串都是回文串，返回 s 所有可能的分割方案。
     static List<List<String>> res = new ArrayList<>();
@@ -46,7 +48,7 @@ public class Partitions {
     // 给定一个只包含数字的字符串 s ，复原它并返回所有可能的 IP 地址格式。
     static List<String> result = new ArrayList<>();
     public static List<String> restoreIpAddresses(String s) {
-        StringBuilder sb = new StringBuilder(s);
+        StringBuilder sb = new StringBuilder(s);// 因为字符串是不可变的，所以使用StringBuilder来进行修改
         backTracking(sb, 0, 0);
         return result;
     }
@@ -72,6 +74,7 @@ public class Partitions {
         }
     }
 
+    // 判断字符串s从start到end的子串是否是一个合法的数字片段，不能以0开头且数值不大于255
     public static boolean isValid(StringBuilder s, int start, int end) {
         if (start > end)
             return false;

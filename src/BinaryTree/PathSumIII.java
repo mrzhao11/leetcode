@@ -1,6 +1,8 @@
 package BinaryTree;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PathSumIII {
@@ -40,6 +42,50 @@ public class PathSumIII {
 
         // 回溯：移除当前节点的前缀和
         map.put(curSum, map.get(curSum) - 1);
+    }
+
+    // 路经总和
+    // 给你一个二叉树的根节点 root 和一个整数目标和 targetSum ，判断该二叉树中是否存在 根节点到叶子节点 的路径，这条路径上所有节点值相加等于目标和 targetSum 。
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        List<Integer> paths = new ArrayList<>();
+        List<Integer> res = new ArrayList<>();
+        if(root == null) return false;
+        traversal(root,paths,res);
+        for(int x : res) {
+            if(x == targetSum) return true;
+        }
+        return false;
+    }
+
+    private void traversal(TreeNode root, List<Integer> paths, List<Integer> res) {
+        if(root == null) return;
+        paths.add(root.val);
+        // 如果当前节点是叶子节点，计算路径和并加入结果列表
+        if(root.left == null && root.right == null) {
+            int sum = 0;
+            for(int x : paths) {
+                sum += x;
+            }
+            res.add(sum);
+        }
+        // 继续遍历左右子树，回溯时移除当前节点的值
+        traversal(root.left,paths,res);
+        traversal(root.right,paths,res);
+        paths.remove(paths.size() - 1);
+    }
+
+    // 路经总和 递归优化
+    public boolean hasPathSum2(TreeNode root, int targetSum) {
+        if(root == null) return false;
+        // 如果当前节点是叶子节点，判断路径和是否等于目标和
+        if(root.left == null && root.right == null) {
+            return root.val == targetSum;
+        }
+        // 继续遍历左右子树，递归时更新目标和为 targetSum - 当前节点值
+        boolean left = hasPathSum2(root.left, targetSum - root.val);
+        boolean right = hasPathSum2(root.right, targetSum - root.val);
+        return left || right; // 只要左右子树有一条路径满足条件
+
     }
 
     public static void main(String[] args) {

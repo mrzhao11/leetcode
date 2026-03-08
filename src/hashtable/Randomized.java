@@ -6,18 +6,18 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Randomized {
     // 设计一个支持在平均 时间复杂度 O(1) 下，执行以下操作的数据结构。
     //
-    //insert(val)：当元素 val 不存在时，向集合中插入该项。
-    //remove(val)：当元素 val 存在时，从集合中移除该项。
-    //getRandom：随机返回现有集合中的一项。每个元素应该有相同的概率被返回。
+    // insert(val)：当元素 val 不存在时，向集合中插入该项。
+    // remove(val)：当元素 val 存在时，从集合中移除该项。
+    // getRandom：随机返回现有集合中的一项。每个元素应该有相同的概率被返回。
+
+    // 这里使用Map存储元素及其在列表中的索引，使用List存储元素，方便随机访问。插入和删除操作都可以在O(1)时间内完成。
     class RandomizedSet {
         List<Integer> nums; // 存储元素的列表
         Map<Integer, Integer> indices; // 存储元素及其在列表中的索引
-        Random random; // 用于生成随机数
 
         public RandomizedSet() {
             nums = new ArrayList<>();
             indices = new HashMap<>();
-            random = new Random();
         }
 
         // 插入元素，如果元素已存在返回 false，否则插入并返回 true
@@ -36,6 +36,7 @@ public class Randomized {
         public boolean remove(int val) {
             if (!indices.containsKey(val)) {
                 return false;
+
             }
             int index = indices.get(val); // 获取要移除元素的索引
             int last = nums.get(nums.size() - 1); // 获取列表中最后一个元素

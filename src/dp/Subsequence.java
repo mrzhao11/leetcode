@@ -19,7 +19,7 @@ public class Subsequence {
             for(int j = 0; j < i;j++){
                 // dp[i] 以nums[i]结尾那么前一个元素来自i之前且比nums[i]小的元素
                 if(nums[j] < nums[i]) {
-                    // 位置i的最长升序子序列等于j从0到i-1各个位置的最长升序子序列 + 1 的最大值
+                    // 以nums[i]结尾的最长递增子序列长度要么是之前的dp[i]，要么是以nums[j]结尾的最长递增子序列长度加1
                     dp[i] = Math.max(dp[i],dp[j]+1);
                 }
             }
