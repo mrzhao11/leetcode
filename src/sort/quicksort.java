@@ -92,40 +92,40 @@ public class quicksort {
     // 三路快排递归方法：随机轴 + 三路划分
     // 思想：在单轴快排的基础上，增加了对等于轴元素的处理。通过三个指针 lt, gt, i 来划分小于、等于、大于轴的区域，从而减少了重复元素对性能的影响。
     private static void quickSort(int[] arr, int l, int r) {
-        if (l < r) {
-            int randIdx = ThreadLocalRandom.current().nextInt(l, r + 1); // 在 [left, right] 范围内的随机值
-            swap.swap(arr, l, randIdx); // arr[l] 与它之后的某个数交换
-            int pivot = arr[l]; // 以随机轴为基准元素
+        if (l >= r) return; // 递归终止条件
+        int randIdx = ThreadLocalRandom.current().nextInt(l, r + 1); // 在 [left, right] 范围内的随机值
+        swap.swap(arr, l, randIdx); // arr[l] 与它之后的某个数交换
+        int pivot = arr[l]; // 以随机轴为基准元素
 
-            // 三路划分，lt指向小于轴的区域的右边界，gt指向大于轴的区域的左边界，i用于扫描
-            int lt = l;
-            int gt = r;
-            int i = l + 1;
+        // 三路划分，lt指向小于轴的区域的右边界，gt指向大于轴的区域的左边界，i用于扫描
+        int lt = l;
+        int gt = r;
+        int i = l + 1;
 
-            // 如果当前元素小于轴，则与lt位置交换，lt和i都右移
-            // 如果当前元素大于轴，则与gt位置交换，gt左移，i不变
-            // 如果当前元素等于轴，则i右移
-            while (i <= gt) {
-                if (arr[i] < pivot) {
-                    swap.swap(arr, i, lt);
-                    lt++;
-                    i++;
-                } else if (arr[i] > pivot) {
-                    swap.swap(arr, i, gt);
-                    gt--;
-                } else {
-                    i++;
-                }
+        // 如果当前元素小于轴，则与lt位置交换，lt和i都右移
+        // 如果当前元素大于轴，则与gt位置交换，gt左移，i不变
+        // 如果当前元素等于轴，则i右移
+        while (i <= gt) {
+            if (arr[i] < pivot) {
+                swap.swap(arr, i, lt);
+                lt++;
+                i++;
+            } else if (arr[i] > pivot) {
+                swap.swap(arr, i, gt);
+                gt--;
+            } else {
+                i++;
             }
-
-            // 现在：
-            // [l ... lt-1] < pivot
-            // [lt ... gt]  == pivot
-            // [gt+1 ... r] > pivot
-
-            quickSort(arr, l, lt - 1);
-            quickSort(arr, gt + 1, r);
         }
+
+        // 现在：
+        // [l ... lt-1] < pivot
+        // [lt ... gt]  == pivot
+        // [gt+1 ... r] > pivot
+
+        quickSort(arr, l, lt - 1);
+        quickSort(arr, gt + 1, r);
+
     }
 }
 
